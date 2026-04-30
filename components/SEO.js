@@ -357,6 +357,10 @@ const SEO = props => {
     null,
     NOTION_CONFIG
   )
+  const CLARITY_ID =
+    siteConfig('CLARITY_ID', null, NOTION_CONFIG) ||
+    process.env.NEXT_PUBLIC_CLARITY_ID ||
+    process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_PROJECT_ID
 
   const BLOG_FAVICON = siteConfig('BLOG_FAVICON', null, NOTION_CONFIG)
 
@@ -483,6 +487,24 @@ const SEO = props => {
         <meta
           name='baidu-site-verification'
           content={SEO_BAIDU_SITE_VERIFICATION}
+        />
+      )}
+      {CLARITY_ID && (
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c, l, a, r, i, t, y) {
+                c[a] = c[a] || function() {
+                  (c[a].q = c[a].q || []).push(arguments);
+                };
+                t = l.createElement(r);
+                t.async = 1;
+                t.src = "https://www.clarity.ms/tag/" + i;
+                y = l.getElementsByTagName(r)[0];
+                y.parentNode.insertBefore(t, y);
+              })(window, document, "clarity", "script", "${CLARITY_ID}");
+            `
+          }}
         />
       )}
       <meta name='keywords' content={keywords} />

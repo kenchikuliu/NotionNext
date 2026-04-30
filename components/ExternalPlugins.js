@@ -104,10 +104,6 @@ const ExternalPlugin = props => {
   )
   const TIANLI_KEY = siteConfig('TianliGPT_KEY', null, NOTION_CONFIG)
   const GLOBAL_JS = siteConfig('GLOBAL_JS', '', NOTION_CONFIG)
-  const CLARITY_ID =
-    siteConfig('CLARITY_ID', null, NOTION_CONFIG) ||
-    process.env.NEXT_PUBLIC_CLARITY_ID ||
-    process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_PROJECT_ID
   const YANDEX_METRICA_ID =
     siteConfig('YANDEX_METRICA_ID', null, NOTION_CONFIG) ||
     process.env.NEXT_PUBLIC_YANDEX_METRICA_ID
@@ -256,32 +252,6 @@ const ExternalPlugin = props => {
                         chatbotId: "${CHATBASE_ID}",
                         }
                     `
-            }}
-          />
-        </>
-      )}
-
-      {CLARITY_ID && (
-        <>
-          <script
-            async
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(c, l, a, r, i, t, y) {
-                  c[a] = c[a] || function() {
-                    (c[a].q = c[a].q || []).push(arguments);
-                  };
-                  t = l.createElement(r);
-                  t.async = 1;
-                  t.src = "https://www.clarity.ms/tag/" + i;
-                  y = l.getElementsByTagName(r)[0];
-                  if (y && y.parentNode) {
-                    y.parentNode.insertBefore(t, y);
-                  } else {
-                    l.head.appendChild(t);
-                  }
-                })(window, document, "clarity", "script", "${CLARITY_ID}");
-                `
             }}
           />
         </>
