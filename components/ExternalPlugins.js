@@ -104,12 +104,13 @@ const ExternalPlugin = props => {
   )
   const TIANLI_KEY = siteConfig('TianliGPT_KEY', null, NOTION_CONFIG)
   const GLOBAL_JS = siteConfig('GLOBAL_JS', '', NOTION_CONFIG)
-  const CLARITY_ID = siteConfig('CLARITY_ID', null, NOTION_CONFIG)
-  const YANDEX_METRICA_ID = siteConfig(
-    'YANDEX_METRICA_ID',
-    null,
-    NOTION_CONFIG
-  )
+  const CLARITY_ID =
+    siteConfig('CLARITY_ID', null, NOTION_CONFIG) ||
+    process.env.NEXT_PUBLIC_CLARITY_ID ||
+    process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_PROJECT_ID
+  const YANDEX_METRICA_ID =
+    siteConfig('YANDEX_METRICA_ID', null, NOTION_CONFIG) ||
+    process.env.NEXT_PUBLIC_YANDEX_METRICA_ID
   const IMG_SHADOW = siteConfig('IMG_SHADOW', null, NOTION_CONFIG)
   const ANIMATE_CSS_URL = siteConfig('ANIMATE_CSS_URL', null, NOTION_CONFIG)
   const MOUSE_FOLLOW = siteConfig('MOUSE_FOLLOW', null, NOTION_CONFIG)
