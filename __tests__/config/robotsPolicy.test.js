@@ -1,7 +1,7 @@
 describe('robots policy', () => {
   test('disallows low-value search and listing routes', () => {
     const config = require('@/next-sitemap.config')
-    const disallowPolicy = config.policies.find(
+    const disallowPolicy = config.robotsTxtOptions.policies.find(
       policy => Array.isArray(policy.disallow) && policy.disallow.length > 0
     )
 

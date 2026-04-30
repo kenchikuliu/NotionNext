@@ -347,6 +347,16 @@ const SEO = props => {
     null,
     NOTION_CONFIG
   )
+  const SEO_BING_SITE_VERIFICATION = siteConfig(
+    'SEO_BING_SITE_VERIFICATION',
+    null,
+    NOTION_CONFIG
+  )
+  const SEO_YANDEX_SITE_VERIFICATION = siteConfig(
+    'SEO_YANDEX_SITE_VERIFICATION',
+    null,
+    NOTION_CONFIG
+  )
 
   const BLOG_FAVICON = siteConfig('BLOG_FAVICON', null, NOTION_CONFIG)
 
@@ -458,6 +468,15 @@ const SEO = props => {
         <meta
           name='google-site-verification'
           content={SEO_GOOGLE_SITE_VERIFICATION}
+        />
+      )}
+      {SEO_BING_SITE_VERIFICATION && (
+        <meta name='msvalidate.01' content={SEO_BING_SITE_VERIFICATION} />
+      )}
+      {SEO_YANDEX_SITE_VERIFICATION && (
+        <meta
+          name='yandex-verification'
+          content={SEO_YANDEX_SITE_VERIFICATION}
         />
       )}
       {SEO_BAIDU_SITE_VERIFICATION && (
