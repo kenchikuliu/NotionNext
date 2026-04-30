@@ -42,6 +42,8 @@ module.exports = {
     process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_PROJECT_ID ||
     null, // 只需要复制Clarity脚本中的ID部分，ID是一个十位的英文数字组合
 
+  YANDEX_METRICA_ID: process.env.NEXT_PUBLIC_YANDEX_METRICA_ID || '', // Yandex Metrica counter ID
+
   UMAMI_HOST: process.env.NEXT_PUBLIC_UMAMI_HOST || 'https://cloud.umami.is/script.js', // umami的服务地址
   UMAMI_ID: process.env.NEXT_PUBLIC_UMAMI_ID || '', // umami的id
 
