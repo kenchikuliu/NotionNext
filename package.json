@@ -45,6 +45,7 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "health-check": "node scripts/health-check.js",
     "seo:sitemap-audit": "node scripts/seo-sitemap-audit.js",
+    "ga4:gsc:pipeline": "node scripts/ga4-gsc-pipeline.mjs",
     "image:sync-r2": "node scripts/r2-image-sync.js",
     "validate": "npm run health-check",
     "final-validation": "node scripts/final-validation.js"
