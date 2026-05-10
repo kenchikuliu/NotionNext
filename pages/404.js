@@ -1,5 +1,5 @@
 import BLOG from '@/blog.config'
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 import { DynamicLayout } from '@/themes/theme'
 
 /**
@@ -18,7 +18,7 @@ export function getStaticProps() {
       siteInfo: {
         title: 'AI博士Charlii',
         description: '分享AIGC与实用技能',
-        pageCover: '/bg_image.jpg'
+        pageCover: publicAssetUrl('/bg_image.jpg')
       },
       latestPosts: [],
       allNavPages: [],

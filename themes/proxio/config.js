@@ -1,3 +1,5 @@
+import { publicAssetUrl } from '@/lib/config'
+
 /**
  * 另一个落地页主题
  */
@@ -15,7 +17,7 @@ const CONFIG = {
     '/about', // 英雄区按钮
   PROXIO_HERO_BUTTON_2_TEXT: '在Github上关注', // 英雄区按钮
   PROXIO_HERO_BUTTON_2_URL: 'https://github.com/kenchikuliu', // 英雄区按钮
-  PROXIO_HERO_BUTTON_2_ICON: '/images/starter/github-mark.svg', // 英雄区按钮2的图标，不需要则留空
+  PROXIO_HERO_BUTTON_2_ICON: publicAssetUrl('/images/starter/github-mark.svg'), // 英雄区按钮2的图标，不需要则留空
 
   // 英雄区配图，如需隐藏，改为空值即可 ''
   PROXIO_HERO_BANNER_IMAGE: '', // hero区背景，默认是获取Notion背景，如需另外配置图片可以填写在这里
@@ -28,7 +30,7 @@ const CONFIG = {
   PROXIO_BLOG_TEXT_1: '我的最新动态',
 
   // 区块默认内容显示文章的summary文本，但也支持用自定义图片或logo德国替换掉占位显示内容
-  PROXIO_BLOG_PLACEHOLDER_IMG_URL_1: '', // 填写要替换成的图片，支持图床或直接上传到项目中，示例  /images/feature-1.webp
+  PROXIO_BLOG_PLACEHOLDER_IMG_URL_1: '', // 填写要替换成的图片，支持图床或 CDN 远程地址
   PROXIO_BLOG_PLACEHOLDER_IMG_URL_2: '',
   PROXIO_BLOG_PLACEHOLDER_IMG_URL_3: '',
   PROXIO_BLOG_PLACEHOLDER_IMG_URL_4: '',
@@ -43,7 +45,7 @@ const CONFIG = {
 
   // 特性1
   PROXIO_FEATURE_1_ICON_CLASS: 'fa-solid fa-stopwatch', // fas图标
-  PROXIO_FEATURE_1_ICON_IMG_URL: '', // 图片图标选填，默认是fas图标，如果需要图片图标可以填写图片地址，示例/avatar.png
+  PROXIO_FEATURE_1_ICON_IMG_URL: '', // 图片图标选填，默认是fas图标，如果需要图片图标可以填写远程图片地址
   PROXIO_FEATURE_1_TITLE_1: '高效工作流程',
   PROXIO_FEATURE_1_TEXT_1:
     '精简的设计流程确保快速交付，在紧迫的工期下仍能保证品质与细节不打折扣。',
@@ -120,7 +122,7 @@ const CONFIG = {
     {
       PROXIO_TESTIMONIALS_ITEM_TEXT:
         '呜呜呜，经过一个下午的努力，终于把博客部署好啦，非常感谢CharliiAI大佬的框架和教程，这是我有生之年用过的最好用的博客框架┭┮﹏┭┮。从今之后，我就可以在自己的博客里bb啦，( •̀ ω •́ )y ',
-      PROXIO_TESTIMONIALS_ITEM_AVATAR: '/avatar.png',
+      PROXIO_TESTIMONIALS_ITEM_AVATAR: publicAssetUrl('/avatar.png'),
       PROXIO_TESTIMONIALS_ITEM_NICKNAME: 'DWIND',
       PROXIO_TESTIMONIALS_ITEM_DESCRIPTION: '且听风吟 站长',
       PROXIO_TESTIMONIALS_ITEM_URL: 'https://www.dwind.top/'
@@ -137,14 +139,14 @@ const CONFIG = {
     {
       PROXIO_TESTIMONIALS_ITEM_TEXT:
         '灰常感谢大佬的博客项目，能将博客和notion结合起来，这一直是我挺期待的博客模式。',
-      PROXIO_TESTIMONIALS_ITEM_AVATAR: '/avatar.png',
+      PROXIO_TESTIMONIALS_ITEM_AVATAR: publicAssetUrl('/avatar.png'),
       PROXIO_TESTIMONIALS_ITEM_NICKNAME: 'AnJhon',
       PROXIO_TESTIMONIALS_ITEM_DESCRIPTION: 'Anjhon`s Blog 站长',
       PROXIO_TESTIMONIALS_ITEM_URL: 'https://www.anjhon.top'
     },
     {
       PROXIO_TESTIMONIALS_ITEM_TEXT: '用好久了，太感谢了',
-      PROXIO_TESTIMONIALS_ITEM_AVATAR: '/avatar.png',
+      PROXIO_TESTIMONIALS_ITEM_AVATAR: publicAssetUrl('/avatar.png'),
       PROXIO_TESTIMONIALS_ITEM_NICKNAME: 'LUCEN',
       PROXIO_TESTIMONIALS_ITEM_DESCRIPTION: 'LUCEN考验辅导 站长',
       PROXIO_TESTIMONIALS_ITEM_URL: 'https://www.lucenczz.top/'
@@ -181,7 +183,7 @@ const CONFIG = {
   PROXIO_ABOUT_TEXT_1: 'I am an Architect Turned Into a Product Designer',
   PROXIO_ABOUT_TEXT_2:
     'With a background in architecture, I now apply my expertise to product design, blending aesthetics, functionality, and innovation. My goal is to create modern, user-focused designs that bring your vision to life.',
-  PROXIO_ABOUT_PHOTO_URL: '/avatar.png',
+  PROXIO_ABOUT_PHOTO_URL: publicAssetUrl('/avatar.png'),
   PROXIO_ABOUT_KEY_1: '经验年限',
   PROXIO_ABOUT_VAL_1: '10年+',
   PROXIO_ABOUT_KEY_2: '客户',

@@ -1,4 +1,4 @@
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 import Head from 'next/head'
 import { useEffect, useRef, useState } from 'react'
 
@@ -52,10 +52,11 @@ export default function LazyImage({
   const handleImageError = () => {
     if (imageRef.current) {
       // 尝试加载 placeholderSrc，如果失败则加载 defaultPlaceholderSrc
-      if (imageRef.current.src !== placeholderSrc && placeholderSrc) {
-        imageRef.current.src = placeholderSrc
+      const fallbackPlaceholderSrc = publicAssetUrl(placeholderSrc)
+      if (imageRef.current.src !== fallbackPlaceholderSrc && fallbackPlaceholderSrc) {
+        imageRef.current.src = fallbackPlaceholderSrc
       } else {
-        imageRef.current.src = defaultPlaceholderSrc
+        imageRef.current.src = publicAssetUrl(defaultPlaceholderSrc)
       }
       // 移除占位符类名
       if (imageRef.current) {
@@ -65,8 +66,10 @@ export default function LazyImage({
   }
 
   useEffect(() => {
+    const normalizedSrc = publicAssetUrl(src)
     const adjustedImageSrc =
-      adjustImgSize(src, maxWidth) || defaultPlaceholderSrc
+      adjustImgSize(normalizedSrc, maxWidth) ||
+      publicAssetUrl(defaultPlaceholderSrc)
 
     // 如果是优先级图片，直接加载
     if (priority) {
@@ -136,7 +139,13 @@ export default function LazyImage({
     ref: imageRef,
     src: currentSrc,
     'data-src': src, // 存储原始图片地址
-    alt: alt || title || 'Image in ' + (typeof window !== 'undefined' ? window.location.pathname.split('/').pop() || 'homepage' : 'article'),
+    alt:
+      alt ||
+      title ||
+      'Image in ' +
+        (typeof window !== 'undefined'
+          ? window.location.pathname.split('/').pop() || 'homepage'
+          : 'article'),
     onLoad: handleThumbnailLoaded,
     onError: handleImageError,
     className: `${className || ''} lazy-image-placeholder`,
@@ -166,7 +175,11 @@ export default function LazyImage({
       {/* 预加载 */}
       {priority && (
         <Head>
-          <link rel='preload' as='image' href={adjustImgSize(src, maxWidth)} />
+          <link
+            rel='preload'
+            as='image'
+            href={adjustImgSize(publicAssetUrl(src), maxWidth)}
+          />
         </Head>
       )}
     </>

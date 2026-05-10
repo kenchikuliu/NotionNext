@@ -1,4 +1,4 @@
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { generateLocaleDict } from '@/lib/lang'
 import { getEnhancedPostDescription, getEnhancedPostTitle, getPostEnhancement } from '@/lib/seo/postEnhancements'
@@ -299,7 +299,7 @@ const SEO = props => {
     keywords = post?.tags?.join(',')
   }
   if (meta) {
-    image = meta.image || '/bg_image.jpg'
+    image = publicAssetUrl(meta.image || '/bg_image.jpg')
   }
   const absoluteImage = toAbsoluteUrl(image, url)
   const canonicalPath =

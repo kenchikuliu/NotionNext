@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -136,7 +137,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'Privacy policy for CharliiAI site visits, cookies, analytics, and contact data.'
         : 'CharliiAI 网站访问、Cookies、分析服务与联系信息处理的隐私政策。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/privacy-policy`
   }
 

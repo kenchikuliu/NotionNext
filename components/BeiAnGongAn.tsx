@@ -1,11 +1,11 @@
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 import LazyImage from './LazyImage'
 import React from 'react'
 
 interface BeiAnGongAnProps {
   className?: string
   /**
-   * 自定义图标路径，默认为'/images/gongan.png'
+   * 自定义图标路径，默认使用公安备案图标的 CDN 地址
    */
   iconPath?: string
   /**
@@ -21,7 +21,7 @@ interface BeiAnGongAnProps {
  */
 export const BeiAnGongAn: React.FC<BeiAnGongAnProps> = ({
   className = '',
-  iconPath = '/images/gongan.png',
+  iconPath = publicAssetUrl('/images/gongan.png'),
   iconSize = 15
 }: BeiAnGongAnProps): JSX.Element | null => {
   const BEI_AN_GONGAN = siteConfig('BEI_AN_GONGAN') as string | null | undefined

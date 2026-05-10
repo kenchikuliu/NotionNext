@@ -4,7 +4,7 @@
 'use client'
 import Loading from '@/components/Loading'
 import NotionPage from '@/components/NotionPage'
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 import { isBrowser } from '@/lib/utils'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -281,8 +281,8 @@ const Layout404 = props => {
             <div className='w-full px-4 md:w-5/12 lg:w-6/12'>
               <div className='text-center'>
                 <img
-                  src='/images/starter/404.svg'
-                  alt='image'
+                  src={publicAssetUrl('/images/starter/404.svg')}
+                  alt='404 illustration'
                   className='max-w-full mx-auto'
                 />
               </div>

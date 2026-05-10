@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -136,7 +137,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'Terms of service for CharliiAI site content, links, and related usage.'
         : 'CharliiAI 网站内容、链接与相关使用说明的服务条款。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/terms-of-service`
   }
 

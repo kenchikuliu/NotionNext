@@ -41,7 +41,7 @@ export const Team = () => {
                     <div className='relative z-10 mx-auto mb-5 h-[120px] w-[120px]'>
                       <img
                         src={item.STARTER_TEAM_ITEM_AVATAR}
-                        alt='team image'
+                        alt={`${item.STARTER_TEAM_ITEM_NICKNAME || 'Team member'} portrait`}
                         className='h-[120px] w-[120px] rounded-full'
                       />
                       <span className='absolute bottom-0 left-0 -z-10 h-10 w-10 rounded-full bg-secondary opacity-0 transition-all group-hover:opacity-100'></span>

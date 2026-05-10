@@ -111,7 +111,7 @@ export const Testimonials = () => {
                           <div className='h-[50px] w-[50px] overflow-hidden rounded-full'>
                             <img
                               src={item.STARTER_TESTIMONIALS_ITEM_AVATAR}
-                              alt='author'
+                              alt={`${item.STARTER_TESTIMONIALS_ITEM_NICKNAME || 'Customer'} portrait`}
                               className='h-[50px] w-[50px] overflow-hidden rounded-full object-cover'
                             />
                           </div>

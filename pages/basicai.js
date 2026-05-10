@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -230,7 +231,7 @@ const BasicAiPage = ({ foundationPosts }) => {
           <div className='overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)] lg:col-span-2'>
             <div className='grid gap-0 md:grid-cols-[0.92fr_1.08fr]'>
               <img
-                src='/images/hero-image.png'
+                src={publicAssetUrl('/images/hero-image.png')}
                 alt='AI foundations workspace'
                 className='h-72 w-full object-cover object-center md:h-full'
               />
@@ -347,7 +348,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'AI foundations for readers who want core concepts, judgment frameworks, and fewer empty buzzwords.'
         : '面向入门和进阶读者整理 AI 基础概念、判断框架与常见误区。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/basicai`
   }
 

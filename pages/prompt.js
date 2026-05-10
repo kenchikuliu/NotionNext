@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -267,7 +268,7 @@ const PromptPage = ({ promptPosts }) => {
           <div className='overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)]'>
             <div className='grid gap-0 md:grid-cols-[1.02fr_0.98fr]'>
               <img
-                src='/images/hero-image.png'
+                src={publicAssetUrl('/images/hero-image.png')}
                 alt='Prompt workflow board'
                 className='h-72 w-full object-cover object-center md:h-full'
               />
@@ -397,7 +398,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'Practical prompt design guidance for real tasks, workflows, and AI tool usage.'
         : '围绕真实任务、工作流和工具使用整理 AI 提示词设计方法。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/prompt`
   }
 

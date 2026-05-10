@@ -1,3 +1,5 @@
+import { publicAssetUrl } from '@/lib/config'
+
 /* eslint-disable @next/next/no-img-element */
 export const MadeWithButton = () => {
   return <>
@@ -14,13 +16,13 @@ export const MadeWithButton = () => {
       <span className="block h-4 w-px bg-stroke dark:bg-dark-3"></span>
       <span className="block w-full max-w-[88px]">
         <img
-          src="/images/starter/brands/tailgrids.svg"
-          alt="tailgrids"
+          src={publicAssetUrl('/images/starter/brands/tailgrids.svg')}
+          alt="TailGrids logo"
           className="dark:hidden"
         />
         <img
-          src="/images/starter/brands/tailgrids-white.svg"
-          alt="tailgrids"
+          src={publicAssetUrl('/images/starter/brands/tailgrids-white.svg')}
+          alt="TailGrids logo"
           className="hidden dark:block"
         />
       </span>

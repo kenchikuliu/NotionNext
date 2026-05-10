@@ -1,4 +1,4 @@
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 import SocialButton from '@/themes/fukasawa/components/SocialButton'
 import { Logo } from './Logo'
 import { SVGFooterCircleBG } from './svg/SVGFooterCircleBG'
@@ -150,11 +150,17 @@ export const Footer = props => {
         {/* Footer 背景 */}
         <div>
           <span className='absolute left-0 top-0 z-[-1]'>
-            <img src='/images/starter/footer/shape-1.svg' alt='' />
+            <img
+              src={publicAssetUrl('/images/starter/footer/shape-1.svg')}
+              alt='Decorative footer shape'
+            />
           </span>
 
           <span className='absolute bottom-0 right-0 z-[-1]'>
-            <img src='/images/starter/footer/shape-3.svg' alt='' />
+            <img
+              src={publicAssetUrl('/images/starter/footer/shape-3.svg')}
+              alt='Decorative footer accent'
+            />
           </span>
 
           <span className='absolute right-0 top-0 z-[-1]'>

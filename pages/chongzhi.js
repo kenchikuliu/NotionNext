@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -146,7 +147,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'ClaudeCode recharge and purchasing inquiries handled by email.'
         : 'ClaudeCode 充值、代充与采购咨询入口，统一通过邮件确认。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/chongzhi`
   }
 

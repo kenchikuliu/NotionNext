@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import CONFIG from '../config'
 import LazyImage from '@/components/LazyImage'
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 // import FeaturesElement from '@/public/images/features-element.png'
 
 export default function Features() {
@@ -115,7 +115,10 @@ export default function Features() {
                     unmount={false}
                   >
                     <div className="relative inline-flex flex-col">
-                      <LazyImage src='/images/feature-1.webp'/>
+                      <LazyImage
+                        src={publicAssetUrl('/images/feature-1.webp')}
+                        alt='Feature preview for the first product workflow'
+                      />
                     </div>
 
                   </Transition>
@@ -134,7 +137,10 @@ export default function Features() {
                     unmount={false}
                   >
                     <div className="relative inline-flex flex-col">
-                        <LazyImage src='/images/feature-2.webp'/>
+                        <LazyImage
+                          src={publicAssetUrl('/images/feature-2.webp')}
+                          alt='Feature preview for the second product workflow'
+                        />
                     </div>
                   </Transition>
                   {/* Item 3 */}
@@ -152,7 +158,10 @@ export default function Features() {
                     unmount={false}
                   >
                     <div className="relative inline-flex flex-col">
-                        <LazyImage src='/images/feature-3.webp'/>
+                        <LazyImage
+                          src={publicAssetUrl('/images/feature-3.webp')}
+                          alt='Feature preview for the third product workflow'
+                        />
                     </div>
                   </Transition>
                 </div>

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import LazyImage from '@/components/LazyImage'
-import { siteConfig } from '@/lib/config'
+import { publicAssetUrl, siteConfig } from '@/lib/config'
 import CONFIG from '../config'
 import SmartLink from '@/components/SmartLink'
 
@@ -58,8 +58,15 @@ export const Hero = props => {
                         ) && (
                           <img
                             className='mr-4'
-                            src={siteConfig(
-                              'STARTER_HERO_BUTTON_2_ICON',
+                            src={publicAssetUrl(
+                              siteConfig(
+                                'STARTER_HERO_BUTTON_2_ICON',
+                                null,
+                                config
+                              )
+                            )}
+                            alt={siteConfig(
+                              'STARTER_HERO_BUTTON_2_TEXT',
                               null,
                               config
                             )}
@@ -95,10 +102,16 @@ export const Hero = props => {
 
                   {/* 背景图 */}
                   <div className='absolute -left-9 bottom-0 z-[-1]'>
-                    <img src='/images/starter/bg-hero-circle.svg' />
+                    <img
+                      src={publicAssetUrl('/images/starter/bg-hero-circle.svg')}
+                      alt='Decorative hero circle'
+                    />
                   </div>
                   <div className='absolute -right-6 -top-6 z-[-1]'>
-                    <img src='/images/starter/bg-hero-circle.svg' />
+                    <img
+                      src={publicAssetUrl('/images/starter/bg-hero-circle.svg')}
+                      alt='Decorative hero background'
+                    />
                   </div>
                 </div>
               </div>

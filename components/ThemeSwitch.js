@@ -1,4 +1,5 @@
 import { useGlobal } from '@/lib/global'
+import { publicAssetUrl } from '@/lib/config'
 import { getQueryParam } from '@/lib/utils'
 import { THEMES } from '@/themes/theme'
 import { useRouter } from 'next/router'
@@ -54,8 +55,7 @@ const ThemeSwitch = () => {
                   setSideBarVisible(true)
                 }}
                 className='uppercase cursor-pointer'
-                title='Click To Switch Theme'
-                alt='Click To Switch Theme'>
+                title='Click To Switch Theme'>
                 {currentTheme}
               </div>
             </div>
@@ -111,7 +111,8 @@ const ThemeSwitch = () => {
                   {t}
                 </div>
                 <LazyImage
-                  src={`/images/themes-preview/${t}.png`}
+                  src={publicAssetUrl(`/images/themes-preview/${t}.png`)}
+                  alt={`${t} theme preview`}
                   className='cursor-pointer shadow-lg rounded-xl hover:scale-110 duration-200'
                 />
               </div>

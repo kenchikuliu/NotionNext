@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -185,7 +186,7 @@ const EnglishAboutPage = () => {
                 <div className='overflow-hidden rounded-[30px] border border-white/70 bg-slate-950 p-3 shadow-[0_25px_80px_rgba(15,23,42,0.18)]'>
                   <div className='relative overflow-hidden rounded-[24px] bg-slate-900'>
                     <img
-                      src='/avatar.png'
+                      src={publicAssetUrl('/avatar.png')}
                       alt='Dr. Charlii'
                       className='h-[420px] w-full object-cover object-center'
                     />
@@ -315,7 +316,7 @@ const EnglishAboutPage = () => {
 
               <div className='relative min-h-[320px] bg-slate-100'>
                 <img
-                  src='/images/testimonial.jpg'
+                  src={publicAssetUrl('/images/testimonial.jpg')}
                   alt='Founder atmosphere'
                   className='h-full w-full object-cover object-center'
                 />
@@ -427,7 +428,7 @@ const EnglishAboutPage = () => {
 
           <div className='overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)]'>
             <img
-              src='/images/home.png'
+              src={publicAssetUrl('/images/home.png')}
               alt='CharliiAI workspace'
               className='h-64 w-full object-cover object-center sm:h-80'
             />
@@ -538,7 +539,7 @@ const AboutPage = () => {
                 <div className='overflow-hidden rounded-[30px] border border-white/70 bg-slate-950 p-3 shadow-[0_25px_80px_rgba(15,23,42,0.18)]'>
                   <div className='relative overflow-hidden rounded-[24px] bg-slate-900'>
                     <img
-                      src='/avatar.png'
+                      src={publicAssetUrl('/avatar.png')}
                       alt='Dr. Charlii'
                       className='h-[420px] w-full object-cover object-center'
                     />
@@ -654,7 +655,7 @@ const AboutPage = () => {
 
               <div className='relative min-h-[320px] bg-slate-100'>
                 <img
-                  src='/images/testimonial.jpg'
+                  src={publicAssetUrl('/images/testimonial.jpg')}
                   alt='Founder atmosphere'
                   className='h-full w-full object-cover object-center'
                 />
@@ -724,8 +725,8 @@ const AboutPage = () => {
           <div className='overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)]'>
             <div className='grid gap-0 sm:grid-cols-2'>
               <img
-                src='/images/hero-image.png'
-                alt='Workspace visual'
+                src={publicAssetUrl('/images/hero-image.png')}
+                alt='CharliiAI workspace visual'
                 className='h-64 w-full object-cover object-center sm:h-full'
               />
               <div className='bg-[linear-gradient(135deg,_#f8fafc,_#eef5ff)] p-7 sm:p-8'>
@@ -756,7 +757,7 @@ const AboutPage = () => {
         <div className='mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1.1fr_0.9fr]'>
           <div className='overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)]'>
             <img
-              src='/images/home.png'
+              src={publicAssetUrl('/images/home.png')}
               alt='CharliiAI workspace'
               className='h-64 w-full object-cover object-center sm:h-80'
             />
@@ -924,7 +925,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'About CharliiAI, its founder perspective, AI workflow focus, and primary contact information.'
         : 'About CharliiAI, its content focus, editorial perspective, and contact information.',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/about`
   }
 

@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -105,7 +106,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'Contact CharliiAI for partnerships, questions, feedback, and site support.'
         : '联系 CharliiAI，获取合作咨询、反馈沟通与站点相关支持。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/contact`
   }
 

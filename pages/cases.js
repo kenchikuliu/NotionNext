@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -230,7 +231,7 @@ const CasesPage = ({ casePosts }) => {
           <div className='overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)] lg:col-span-2'>
             <div className='grid gap-0 md:grid-cols-[0.92fr_1.08fr]'>
               <img
-                src='/images/testimonial.jpg'
+                src={publicAssetUrl('/images/testimonial.jpg')}
                 alt='AI case study mood'
                 className='h-72 w-full object-cover object-center md:h-full'
               />
@@ -347,7 +348,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'Case studies on how AI lands in content, research, growth, and small-team workflows.'
         : '汇总 AI 在内容、研究、增长和小团队工作流中的实际案例与落地思路。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/cases`
   }
 

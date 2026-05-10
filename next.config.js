@@ -4,6 +4,16 @@ const path = require('path')
 const BLOG = require('./blog.config')
 const { extractLangPrefix } = require('./lib/utils/pageId')
 
+const imageCdnHost = (() => {
+  const raw = process.env.NEXT_PUBLIC_IMAGE_CDN
+  if (!raw) return null
+  try {
+    return new URL(raw).hostname
+  } catch (error) {
+    return null
+  }
+})()
+
 // 打包时是否分析代码
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: BLOG.BUNDLE_ANALYZER
@@ -122,7 +132,8 @@ const nextConfig = {
       'source.unsplash.com',
       'p1.qhimg.com',
       'webmention.io',
-      'ko-fi.com'
+      'ko-fi.com',
+      ...(imageCdnHost ? [imageCdnHost] : [])
     ],
     // 图片加载器优化
     loader: 'default',

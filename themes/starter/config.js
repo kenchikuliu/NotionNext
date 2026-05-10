@@ -1,10 +1,12 @@
+import { publicAssetUrl } from '@/lib/config'
+
 /**
  * 另一个落地页主题
  */
 const CONFIG = {
   // 默认只展示Logo文字，如果设置了logo图片，会在文字左侧显示图标
-  STARTER_LOGO: '', // 普通logo图片 示例：/images/starter/logo/logo.svg
-  STARTER_LOGO_WHITE: '', // 透明底浅色logo 示例： /images/starter/logo/logo-white.svg
+  STARTER_LOGO: '', // 普通 logo 图片，支持远程地址
+  STARTER_LOGO_WHITE: '', // 透明底浅色 logo 图片，支持远程地址
 
   // MENU ， 菜单部分不在此处配置，请在Notion数据库中添加MENU
 
@@ -18,10 +20,10 @@ const CONFIG = {
     '/about', // 英雄区按钮
   STARTER_HERO_BUTTON_2_TEXT: '在Github上关注', // 英雄区按钮
   STARTER_HERO_BUTTON_2_URL: 'https://github.com/kenchikuliu', // 英雄区按钮
-  STARTER_HERO_BUTTON_2_ICON: '/images/starter/github.svg', // 英雄区按钮2的图标，不需要则留空
+  STARTER_HERO_BUTTON_2_ICON: publicAssetUrl('/images/starter/github.svg'), // 英雄区按钮2的图标，不需要则留空
 
   // 英雄区配图，如需隐藏，改为空值即可 ''
-  STARTER_HERO_PREVIEW_IMAGE: '/images/starter/hero/hero-image.webp', // 产品预览图 ，默认读取public目录下图片
+  STARTER_HERO_PREVIEW_IMAGE: publicAssetUrl('/images/starter/hero/hero-image.webp'), // 产品预览图 ，默认读取public目录下图片
   STARTER_HERO_BANNER_IMAGE: '', // hero区下方的全宽图
 
   // 顶部右侧导航暗流
@@ -66,8 +68,8 @@ const CONFIG = {
     'CharliiAI的愿景是帮助非技术人员的小白，最低成本、最快速地搭建自己的网站，帮助您将自己的产品与故事高效地传达给世界。 <br /> <br /> 功能强大的Notion笔记，简单快速的Vercel托管平台，组成一个简单的网站',
   STARTER_ABOUT_BUTTON_TEXT: '了解更多',
   STARTER_ABOUT_BUTTON_URL: 'https://www.charliiai.com/about',
-  STARTER_ABOUT_IMAGE_1: '/images/starter/about/about-image-01.jpg',
-  STARTER_ABOUT_IMAGE_2: '/images/starter/about/about-image-02.jpg',
+  STARTER_ABOUT_IMAGE_1: publicAssetUrl('/images/starter/about/about-image-01.jpg'),
+  STARTER_ABOUT_IMAGE_2: publicAssetUrl('/images/starter/about/about-image-02.jpg'),
   STARTER_ABOUT_TIPS_1: '7000+',
   STARTER_ABOUT_TIPS_2: '博客站点',
   STARTER_ABOUT_TIPS_3: '正在线上运行',
@@ -116,7 +118,7 @@ const CONFIG = {
   STARTER_TESTIMONIALS_TEXT_1: '我们的用户怎么说',
   STARTER_TESTIMONIALS_TEXT_2:
     '数千位站长选择用CharliiAI搭建他们的网站,通过帮助手册、交流社群以及技术咨询，大家成功上线了自己的网站',
-  STARTER_TESTIMONIALS_STAR_ICON: '/images/starter/testimonials/icon-star.svg', // 评分图标
+  STARTER_TESTIMONIALS_STAR_ICON: publicAssetUrl('/images/starter/testimonials/icon-star.svg'), // 评分图标
 
   // 这里不支持CONFIG和环境变量，需要一一修改此处代码。
   STARTER_TESTIMONIALS_ITEMS: [
@@ -213,17 +215,17 @@ const CONFIG = {
       STARTER_TEAM_ITEM_DESCRIPTION: 'Developer'
     },
     {
-      STARTER_TEAM_ITEM_AVATAR: '/images/starter/team/team-01.png',
+      STARTER_TEAM_ITEM_AVATAR: publicAssetUrl('/images/starter/team/team-01.png'),
       STARTER_TEAM_ITEM_NICKNAME: 'Melissa Tatcher',
       STARTER_TEAM_ITEM_DESCRIPTION: 'Marketing Expert'
     },
     {
-      STARTER_TEAM_ITEM_AVATAR: '/images/starter/team/team-02.png',
+      STARTER_TEAM_ITEM_AVATAR: publicAssetUrl('/images/starter/team/team-02.png'),
       STARTER_TEAM_ITEM_NICKNAME: 'Stuard Ferrel',
       STARTER_TEAM_ITEM_DESCRIPTION: 'Digital Marketer'
     },
     {
-      STARTER_TEAM_ITEM_AVATAR: '/images/starter/team/team-03.png',
+      STARTER_TEAM_ITEM_AVATAR: publicAssetUrl('/images/starter/team/team-03.png'),
       STARTER_TEAM_ITEM_NICKNAME: 'Eva Hudson',
       STARTER_TEAM_ITEM_DESCRIPTION: 'Creative Designer'
     }
@@ -261,32 +263,32 @@ const CONFIG = {
   STARTER_BRANDS_ENABLE: true, // 合作伙伴开关
   STARTER_BRANDS: [
     {
-      IMAGE: '/images/starter/brands/graygrids.svg',
-      IMAGE_WHITE: '/images/starter/brands/graygrids-white.svg',
+      IMAGE: publicAssetUrl('/images/starter/brands/graygrids.svg'),
+      IMAGE_WHITE: publicAssetUrl('/images/starter/brands/graygrids-white.svg'),
       URL: 'https://graygrids.com/',
       TITLE: 'graygrids'
     },
     {
-      IMAGE: '/images/starter/brands/lineicons.svg',
-      IMAGE_WHITE: '/images/starter/brands/lineicons-white.svg',
+      IMAGE: publicAssetUrl('/images/starter/brands/lineicons.svg'),
+      IMAGE_WHITE: publicAssetUrl('/images/starter/brands/lineicons-white.svg'),
       URL: 'https://lineicons.com/',
       TITLE: 'lineicons'
     },
     {
-      IMAGE: '/images/starter/brands/uideck.svg',
-      IMAGE_WHITE: '/images/starter/brands/uideck-white.svg',
+      IMAGE: publicAssetUrl('/images/starter/brands/uideck.svg'),
+      IMAGE_WHITE: publicAssetUrl('/images/starter/brands/uideck-white.svg'),
       URL: 'https://uideck.com/',
       TITLE: 'uideck'
     },
     {
-      IMAGE: '/images/starter/brands/ayroui.svg',
-      IMAGE_WHITE: '/images/starter/brands/ayroui-white.svg',
+      IMAGE: publicAssetUrl('/images/starter/brands/ayroui.svg'),
+      IMAGE_WHITE: publicAssetUrl('/images/starter/brands/ayroui-white.svg'),
       URL: 'https://ayroui.com/',
       TITLE: 'ayroui'
     },
     {
-      IMAGE: '/images/starter/brands/tailgrids.svg',
-      IMAGE_WHITE: '/images/starter/brands/tailgrids-white.svg',
+      IMAGE: publicAssetUrl('/images/starter/brands/tailgrids.svg'),
+      IMAGE_WHITE: publicAssetUrl('/images/starter/brands/tailgrids-white.svg'),
       URL: '"https://tailgrids.com/',
       TITLE: 'tailgrids'
     }

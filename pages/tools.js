@@ -1,4 +1,5 @@
 import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
 
@@ -230,7 +231,7 @@ const ToolsPage = ({ toolPosts }) => {
           <div className='overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)] lg:col-span-2'>
             <div className='grid gap-0 md:grid-cols-[0.92fr_1.08fr]'>
               <img
-                src='/images/home.png'
+                src={publicAssetUrl('/images/home.png')}
                 alt='AI tool workspace'
                 className='h-72 w-full object-cover object-center md:h-full'
               />
@@ -347,7 +348,7 @@ export async function getStaticProps({ locale }) {
       locale === 'en-US'
         ? 'A curated CharliiAI entry page for AI tools, workflows, and practical selection judgment.'
         : 'CharliiAI 的 AI 工具导航页，聚焦工具判断、工作流位置与真实使用价值。',
-    pageCover: '/images/home.png',
+    pageCover: publicAssetUrl('/images/home.png'),
     link: `https://www.charliiai.com${locale === 'en-US' ? '/en-US' : ''}/tools`
   }
 
