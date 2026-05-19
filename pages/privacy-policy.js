@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 const zhContent = {
   eyebrow: 'Privacy',
   title: '隐私政策',
-  updatedAt: '最后更新于 2026 年 4 月 28 日。',
+  updatedAt: '最后更新于 2026 年 5 月 20 日。',
   intro:
     'CharliiAI 尊重访问者隐私。本页说明我们可能收集哪些信息、这些信息如何被使用，以及你可以通过什么方式联系我们。',
   sections: [
@@ -21,6 +21,10 @@ const zhContent = {
     {
       heading: 'Cookies 与第三方服务',
       text: '本站可能使用 Cookies 以及第三方统计、广告或性能服务，例如分析工具与广告平台，用于了解访问情况并改进体验。具体第三方服务可能随站点运营需要调整。'
+    },
+    {
+      heading: 'Google AdSense 与广告 Cookie',
+      text: '本站可能使用 Google AdSense 展示广告。Google 及其合作伙伴可能使用 Cookie 或类似技术，根据你访问本站或其他网站的情况投放个性化或非个性化广告。你可以通过 Google 广告设置页面 https://adssettings.google.com/ 管理或退出个性化广告，也可以在浏览器中限制 Cookie。'
     },
     {
       heading: '信息共享',
@@ -39,7 +43,7 @@ const zhContent = {
 const enContent = {
   eyebrow: 'Privacy',
   title: 'Privacy Policy',
-  updatedAt: 'Last updated on April 28, 2026.',
+  updatedAt: 'Last updated on May 20, 2026.',
   intro:
     'CharliiAI respects visitor privacy. This page explains what information may be collected, how it may be used, and how to contact us about privacy-related questions.',
   sections: [
@@ -54,6 +58,10 @@ const enContent = {
     {
       heading: 'Cookies and third-party services',
       text: 'The site may use cookies and third-party analytics, advertising, or performance services to understand traffic and improve the user experience. The exact service mix may change as the site evolves.'
+    },
+    {
+      heading: 'Google AdSense and advertising cookies',
+      text: 'The site may use Google AdSense to display ads. Google and its partners may use cookies or similar technologies to serve personalized or non-personalized ads based on visits to this site or other sites. You can manage or opt out of personalized ads through Google Ads Settings at https://adssettings.google.com/, and you can also restrict cookies in your browser.'
     },
     {
       heading: 'Information sharing',

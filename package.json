@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "cross-env BUILD_MODE=true next build",
+    "postbuild": "node scripts/generate-bilingual-sitemap.mjs",
     "start": "next start",
     "post-build": "next-sitemap --config next-sitemap.config.js",
     "export": "cross-env BUILD_MODE=true EXPORT=true next build && next-sitemap --config next-sitemap.config.js",
