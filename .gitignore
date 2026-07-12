@@ -58,4 +58,5 @@ package-lock.json
 
 .notion-api-lock
 test-results/
+/tmp/
 *.tsbuildinfo
