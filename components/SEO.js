@@ -357,10 +357,7 @@ const SEO = props => {
     null,
     NOTION_CONFIG
   )
-  const CLARITY_ID =
-    siteConfig('CLARITY_ID', null, NOTION_CONFIG) ||
-    process.env.NEXT_PUBLIC_CLARITY_ID ||
-    process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_PROJECT_ID
+  const CLARITY_ID = 'wju8qei921'
 
   const BLOG_FAVICON = siteConfig('BLOG_FAVICON', null, NOTION_CONFIG)
 

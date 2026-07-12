@@ -3,6 +3,7 @@ import { useGlobal } from '@/lib/global'
 import BlogPostListPage from '../components/BlogPostListPage'
 import BlogPostListScroll from '../components/BlogPostListScroll'
 import CategoryBar from '../components/CategoryBar'
+import PaidIntentCta from '../components/PaidIntentCta'
 
 const LayoutPostList = props => {
   const { locale } = useGlobal()
@@ -58,6 +59,7 @@ const LayoutPostList = props => {
         </div>
       )}
       <CategoryBar {...props} />
+      <PaidIntentCta surface='post_list' position='post_list_top' />
       {siteConfig('POST_LIST_STYLE') === 'page' ? (
         <BlogPostListPage {...props} />
       ) : (

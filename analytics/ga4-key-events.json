@@ -1,0 +1,32 @@
+{
+  "site": "charliiai.com",
+  "keyEvents": [
+    "signup_completed",
+    "login_success",
+    "lead_submitted",
+    "payment_succeeded"
+  ],
+  "supportingEvents": [
+    "home_viewed",
+    "page_intent_viewed",
+    "article_viewed",
+    "article_read_50",
+    "article_read_90",
+    "article_link_clicked",
+    "outbound_link_clicked",
+    "search_viewed",
+    "tag_viewed",
+    "category_viewed",
+    "post_list_viewed",
+    "cta_clicked",
+    "signup_started",
+    "login_started",
+    "trial_clicked",
+    "demo_requested",
+    "plan_selected",
+    "pricing_viewed",
+    "checkout_started",
+    "checkout_cancelled",
+    "form_submitted"
+  ]
+}

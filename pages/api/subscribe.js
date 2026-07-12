@@ -8,6 +8,7 @@ import {
   hasLeadDatabaseConfig,
   storeLeadInNotion
 } from '@/lib/integrations/notion-leads'
+import { syncAnalyticsPayload } from '@/lib/analytics/visitor-store'
 
 function normalizeLocale(locale) {
   if (!locale) {
@@ -27,6 +28,13 @@ function getIpAddress(req) {
   return req.socket?.remoteAddress || ''
 }
 
+function normalizeText(value, maxLength = 500) {
+  if (value === undefined || value === null) {
+    return ''
+  }
+  return String(value).trim().slice(0, maxLength)
+}
+
 /**
  * 接受邮件订阅
  * @param {*} req
@@ -42,8 +50,16 @@ export default async function handler(req, res) {
       last_name,
       locale,
       source,
+      product,
+      service,
+      contact_method,
+      contactMethod,
+      message: leadMessage,
       pageUrl,
-      referrer
+      referrer,
+      visitor_id,
+      user_id,
+      first_touch
     } = req.body || {}
 
     if (!email) {
@@ -58,9 +74,20 @@ export default async function handler(req, res) {
       firstName: firstName || first_name || '',
       lastName: lastName || last_name || '',
       locale: normalizeLocale(locale),
-      source: source || 'homepage_cta',
-      pageUrl: pageUrl || process.env.NEXT_PUBLIC_LINK || 'https://www.charliiai.com',
-      referrer: referrer || req.headers.referer || '',
+      source: normalizeText(source, 120) || 'homepage_cta',
+      product: normalizeText(product, 120),
+      service: normalizeText(service, 160),
+      contactMethod: normalizeText(contact_method || contactMethod, 200),
+      message: normalizeText(leadMessage, 2000),
+      pageUrl:
+        normalizeText(pageUrl, 2000) ||
+        process.env.NEXT_PUBLIC_LINK ||
+        'https://www.charliiai.com',
+      referrer: normalizeText(referrer || req.headers.referer || '', 2000),
+      visitorId: typeof visitor_id === 'string' ? visitor_id.slice(0, 128) : '',
+      userId: typeof user_id === 'string' ? user_id.slice(0, 128) : '',
+      firstTouch:
+        first_touch && typeof first_touch === 'object' ? first_touch : null,
       ip: getIpAddress(req),
       userAgent: req.headers['user-agent'] || '',
       submittedAt: new Date().toISOString()
@@ -71,7 +98,9 @@ export default async function handler(req, res) {
         stored_in_notion: false,
         owner_notified: false,
         user_notified: false,
-        notion_page_id: null
+        notion_page_id: null,
+        analytics_synced: false,
+        analytics_storage: null
       }
 
       if (hasLeadDatabaseConfig()) {
@@ -101,13 +130,46 @@ export default async function handler(req, res) {
         })
       }
 
-      return res
-        .status(200)
-        .json({
-          status: 'success',
-          message: 'Lead captured successfully',
-          ...result
+      try {
+        const analyticsResult = await syncAnalyticsPayload({
+          visitor_id: lead.visitorId,
+          user_id: lead.userId,
+          first_touch: lead.firstTouch,
+          source_page: lead.pageUrl,
+          event: {
+            event_name: 'lead_submitted',
+            source: 'server',
+            occurred_at: lead.submittedAt,
+            properties: {
+              form_name: lead.source || 'lead_form',
+              lead_source: lead.source || 'homepage_cta',
+              product: lead.product,
+              service: lead.service,
+              contact_method: lead.contactMethod,
+              has_message: Boolean(lead.message),
+              locale: lead.locale,
+              page_url: lead.pageUrl,
+              referrer: lead.referrer,
+              stored_in_notion: result.stored_in_notion,
+              owner_notified: result.owner_notified,
+              user_notified: result.user_notified
+            }
+          }
         })
+        result.analytics_synced = analyticsResult.ok
+        result.analytics_storage = analyticsResult.storage || null
+      } catch (analyticsError) {
+        console.warn(
+          'subscribe analytics sync skipped',
+          analyticsError?.message || analyticsError
+        )
+      }
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Lead captured successfully',
+        ...result
+      })
     } catch (error) {
       console.error('subscribe handler failed', error)
       return res.status(400).json({

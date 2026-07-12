@@ -19,6 +19,7 @@ const FloatTocButton = dynamic(() => import('../components/FloatTocButton'), {
   ssr: false
 })
 const NotionPage = dynamic(() => import('@/components/NotionPage'))
+const PaidIntentCta = dynamic(() => import('../components/PaidIntentCta'))
 const PostAdjacent = dynamic(() => import('../components/PostAdjacent'), {
   ssr: false
 })
@@ -90,8 +91,10 @@ const LayoutSlug = props => {
                 <ArticleExpirationNotice post={post} />
                 <AISummary aiSummary={post.aiSummary} />
                 <PostIntentPanel post={post} />
+                <PaidIntentCta surface='article_top' position='article_top' />
                 <WWAds orientation='horizontal' className='w-full' />
                 {post && <NotionPage post={post} />}
+                <PaidIntentCta surface='article_bottom' position='article_bottom' />
                 <WWAds orientation='horizontal' className='w-full' />
               </section>
 

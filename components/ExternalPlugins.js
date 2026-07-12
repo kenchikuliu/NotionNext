@@ -12,6 +12,7 @@ import ExternalScript from './ExternalScript'
 import WebWhiz from './Webwhiz'
 import { useGlobal } from '@/lib/global'
 import IconFont from './IconFont'
+import InteractionAnalytics from './InteractionAnalytics'
 
 /**
  * 各种插件脚本
@@ -196,6 +197,7 @@ const ExternalPlugin = props => {
   return (
     <>
       {/* 全局样式嵌入 */}
+      <InteractionAnalytics />
       <GlobalStyle />
       {ENABLE_ICON_FONT && <IconFont />}
       {MOUSE_FOLLOW && <MouseFollow />}

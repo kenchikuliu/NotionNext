@@ -3,6 +3,7 @@ import SmartLink from '@/components/SmartLink'
 import { useGlobal } from '@/lib/global'
 import dynamic from 'next/dynamic'
 import { Transition } from '@headlessui/react'
+import PaidIntentCta from '../components/PaidIntentCta'
 
 const LatestPostsGroup = dynamic(() => import('../components/LatestPostsGroup'))
 
@@ -40,6 +41,10 @@ const Layout404 = props => {
                 </button>
               </SmartLink>
             </div>
+          </div>
+
+          <div className='mt-12'>
+            <PaidIntentCta surface='not_found' position='404_after_error' />
           </div>
 
           <div className='mt-12'>

@@ -32,6 +32,15 @@ Notion是一个能让效率暴涨的生产力引擎，可以帮你书写文档�
 
 一个使用 NextJS + Notion API 实现的，部署在 Vercel 上的静态博客系统。为Notion和所有创作者设计。
 
+## Analytics
+
+CharliiAI 的事件埋点和 GA4 key event 清单见 [ANALYTICS.md](/Users/Yuki/NotionNext/ANALYTICS.md)。确认 DebugView 有事件后：
+
+```bash
+npm run ga4:key-events -- --dry-run
+GA4_PROPERTY_ID="123456789" GOOGLE_API_ACCESS_TOKEN="ya29..." npm run ga4:key-events
+```
+
 支持多种部署方案
 
 ## 预览效果

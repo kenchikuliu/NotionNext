@@ -1,6 +1,7 @@
 import SmartLink from '@/components/SmartLink'
 import { useGlobal } from '@/lib/global'
 import { chineseToEnglishCategory } from '@/lib/utils/categoryMapper'
+import PaidIntentCta from '../components/PaidIntentCta'
 
 const LayoutCategoryIndex = props => {
   const { categoryOptions } = props
@@ -40,6 +41,7 @@ const LayoutCategoryIndex = props => {
         ))}
         </div>
       </div>
+      <PaidIntentCta surface='category_index' position='category_index_bottom' />
     </div>
   )
 }

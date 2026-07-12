@@ -1,5 +1,6 @@
 import SmartLink from '@/components/SmartLink'
 import { useGlobal } from '@/lib/global'
+import PaidIntentCta from '../components/PaidIntentCta'
 
 const LayoutTagIndex = props => {
   const { tagOptions } = props
@@ -39,6 +40,7 @@ const LayoutTagIndex = props => {
         ))}
         </div>
       </div>
+      <PaidIntentCta surface='tag_index' position='tag_index_bottom' />
     </div>
   )
 }

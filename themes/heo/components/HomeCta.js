@@ -3,6 +3,7 @@ import { siteConfig } from '@/lib/config'
 import { getLocaleConfig } from '@/lib/locale-config'
 import { subscribeToNewsletter } from '@/lib/plugins/mailchimp'
 import { trackCtaClick } from '@/lib/plugins/tracking'
+import { trackInteractionEvent } from '@/components/InteractionAnalytics'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -87,6 +88,14 @@ export default function HomeCta() {
         throw new Error(response?.message || 'Subscription failed')
       }
       setStatus('success')
+      trackInteractionEvent('lead_submitted', {
+        form_name: 'heo_home_cta',
+        source: 'newsletter',
+        stored_in_notion: response?.stored_in_notion,
+        owner_notified: response?.owner_notified,
+        user_notified: response?.user_notified,
+        page_path: typeof window !== 'undefined' ? window.location.pathname : undefined
+      })
       setMessage(
         response?.user_notified === false &&
           response?.stored_in_notion === true

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { subscribeToNewsletter } from '@/lib/plugins/mailchimp'
+import { trackInteractionEvent } from '@/components/InteractionAnalytics'
 import { siteConfig } from '@/lib/config'
 import CONFIG from '../config'
 import { useGlobal } from '@/lib/global'
@@ -22,6 +23,11 @@ export default function MailChimpForm() {
         console.log('Subscription succeeded:', response)
         // 在此处添加成功订阅后的操作
         setSuccess(true)
+        trackInteractionEvent('lead_submitted', {
+          form_name: 'fukasawa_mailchimp',
+          source: 'newsletter',
+          page_path: window.location.pathname
+        })
       })
         .catch(error => {
           console.error('Subscription failed:', error)

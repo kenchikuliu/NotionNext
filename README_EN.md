@@ -34,6 +34,14 @@ You can set up your personal website in just a few minutes. Here is the link to 
 
 A static blog system built with NextJS and Notion API, deployed on Vercel. Designed for Notion and all creators.
 
+## Analytics
+
+CharliiAI event tracking and GA4 key-event setup are documented in [ANALYTICS.md](/Users/Yuki/NotionNext/ANALYTICS.md). After confirming events in DebugView:
+
+```bash
+npm run ga4:key-events -- --dry-run
+GA4_PROPERTY_ID="123456789" GOOGLE_API_ACCESS_TOKEN="ya29..." npm run ga4:key-events
+```
 
 ## Preview
 

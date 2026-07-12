@@ -5,6 +5,7 @@ import Card from './Card'
 import Catalog from './Catalog'
 import { InfoCard } from './InfoCard'
 import LatestPostsGroupMini from './LatestPostsGroupMini'
+import PaidIntentCta from './PaidIntentCta'
 import TagGroups from './TagGroups'
 import TouchMeCard from './TouchMeCard'
 
@@ -48,6 +49,12 @@ export default function SideRight(props) {
         <div className='wow fadeInUp'>
           <TouchMeCard />
         </div>
+
+        <PaidIntentCta
+          surface='right_rail'
+          position='right_rail_sticky'
+          compact
+        />
 
         {/* 最新文章列表 */}
         <div

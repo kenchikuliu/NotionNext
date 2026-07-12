@@ -1,4 +1,9 @@
-import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
+import {
+  ISR_LIST_REVALIDATE,
+  buildStaticPropsResult
+} from '@/lib/cache/revalidate'
+import RechargeContactCard from '@/components/RechargeContactCard'
+import RechargeInquiryForm from '@/components/RechargeInquiryForm'
 import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
@@ -22,6 +27,14 @@ const zhContent = {
   ],
   noteTitle: '备注',
   note: '本页不承诺固定报价。具体可用方式、价格和交付安排会根据实际需求确认。',
+  inquiryForm: {
+    title: '提交 GPT 充值咨询',
+    description:
+      '留下邮箱、偏好联系方式和需求说明，我会人工确认适用范围、价格与处理周期。',
+    messagePlaceholder:
+      '例如：需要 GPT 账号充值，个人使用，想确认地区、价格和处理时间。',
+    successMessage: '已收到 GPT 充值咨询，会尽快通过邮件联系你。'
+  },
   contactTitle: '主联系邮箱',
   contactText: '请发邮件，并在标题中注明“GPT 充值”。',
   email: 'charliiai2024@gmail.com'
@@ -46,6 +59,15 @@ const enContent = {
   ],
   noteTitle: 'Note',
   note: 'No fixed pricing is guaranteed on this page. Available methods, pricing, and delivery timing are confirmed based on the actual request.',
+  inquiryForm: {
+    title: 'Submit a GPT recharge inquiry',
+    description:
+      'Leave your email, preferred contact method, and request details. Availability, pricing, and timing are confirmed manually.',
+    messagePlaceholder:
+      'Example: I need GPT recharge for personal use and want to confirm region, pricing, and timing.',
+    successMessage:
+      'GPT recharge inquiry received. I will follow up by email soon.'
+  },
   contactTitle: 'Primary contact email',
   contactText: 'Email us and include “GPT Recharge” in the subject line.',
   email: 'charliiai2024@gmail.com'
@@ -81,7 +103,8 @@ const GptRechargePage = () => {
                 {content.items.map(item => (
                   <div
                     key={item}
-                    className='rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700'>
+                    className='rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700'
+                  >
                     {item}
                   </div>
                 ))}
@@ -96,7 +119,8 @@ const GptRechargePage = () => {
                 {content.info.map(item => (
                   <div
                     key={item}
-                    className='rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700'>
+                    className='rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-700'
+                  >
                     {item}
                   </div>
                 ))}
@@ -114,19 +138,23 @@ const GptRechargePage = () => {
               </p>
             </div>
 
-            <div className='rounded-[28px] border border-slate-200 bg-slate-950 p-6 text-white'>
-              <div className='text-sm font-semibold uppercase tracking-[0.18em] text-amber-300'>
-                {content.contactTitle}
-              </div>
-              <p className='mt-3 text-sm leading-7 text-slate-300'>
-                {content.contactText}
-              </p>
-              <a
-                href={`mailto:${content.email}`}
-                className='mt-4 inline-block text-2xl font-bold text-white hover:text-amber-300'>
-                {content.email}
-              </a>
-            </div>
+            <RechargeInquiryForm
+              content={content}
+              product='gpt_recharge'
+              service='GPT recharge'
+              source='gpt_recharge_inquiry'
+              email={content.email}
+              tone='amber'
+            />
+          </div>
+
+          <div className='mt-5'>
+            <RechargeContactCard
+              content={content}
+              product='gpt_recharge'
+              service='GPT recharge'
+              tone='amber'
+            />
           </div>
         </div>
       </section>
@@ -139,7 +167,10 @@ export async function getStaticProps({ locale }) {
 
   props.siteInfo = {
     ...props.siteInfo,
-    title: locale === 'en-US' ? 'GPT Recharge | CharliiAI' : 'GPT 充值 | AI博士Charlii',
+    title:
+      locale === 'en-US'
+        ? 'GPT Recharge | CharliiAI'
+        : 'GPT 充值 | AI博士Charlii',
     description:
       locale === 'en-US'
         ? 'GPT recharge and purchasing inquiries handled by email.'

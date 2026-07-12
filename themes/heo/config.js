@@ -192,7 +192,7 @@ const CONFIG = {
     },
     {
       title_1: 'LinkedIn',
-      img_1: 'https://cdn.simpleicons.org/linkedin/ffffff',
+      img_1: '/svg/linkedin-white.svg',
       color_1: '#0A66C2',
       title_2: 'Facebook',
       img_2: 'https://cdn.simpleicons.org/facebook/ffffff',
@@ -200,7 +200,7 @@ const CONFIG = {
     },
     {
       title_1: 'OpenAI',
-      img_1: 'https://cdn.simpleicons.org/openai/ffffff',
+      img_1: '/svg/openai-white.svg',
       color_1: '#412991',
       title_2: 'Claude',
       img_2: 'https://cdn.simpleicons.org/anthropic/ffffff',
