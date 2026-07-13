@@ -5,6 +5,8 @@ import { get, list } from '@vercel/blob';
 
 const DEFAULT_PREFIX = 'analytics/visitors/';
 const DEFAULT_LIMIT = 5000;
+const DEFAULT_MAX_READ_ERRORS = 25;
+const DEFAULT_WARN_LIMIT = 5;
 const FUNNEL_EVENTS = [
   'home_viewed',
   'page_intent_viewed',
@@ -41,6 +43,7 @@ Usage:
   node scripts/analytics-blob-report.mjs
   node scripts/analytics-blob-report.mjs --include-smoke
   node scripts/analytics-blob-report.mjs --limit 1000 --out-dir tmp/analytics-blob-report/manual
+  node scripts/analytics-blob-report.mjs --max-read-errors 100 --warn-limit 10
 
 Required env:
   BLOB_READ_WRITE_TOKEN
@@ -89,6 +92,18 @@ function countBy(items, getKey) {
 
 function topMap(map, limit = 20) {
   return Object.fromEntries(Object.entries(map).slice(0, limit));
+}
+
+function topReadErrors(errors, limit = 5) {
+  return Object.fromEntries(
+    Object.entries(errors || {})
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+  );
+}
+
+function readErrorMessage(error) {
+  return String(error?.message || error || 'Unknown read error').slice(0, 300);
 }
 
 function visitorIdFromCacheKey(cacheKey = '') {
@@ -299,7 +314,7 @@ function buildRows(visitors) {
   return { visitorRows, eventRows };
 }
 
-function buildSummary(allVisitors, visibleVisitors, blobItems, includeSmoke) {
+function buildSummary(allVisitors, visibleVisitors, blobItems, includeSmoke, readStats) {
   const visibleEvents = visibleVisitors.flatMap((visitor) => visitor.events);
   const eventCounts = countBy(visibleEvents, (event) => event.event_name);
   const visitorFunnel = {};
@@ -332,6 +347,9 @@ function buildSummary(allVisitors, visibleVisitors, blobItems, includeSmoke) {
       objects_scanned: blobItems.length,
       record_objects: blobItems.filter((item) => item.pathname.includes('/records/')).length,
       legacy_state_objects: blobItems.filter((item) => !item.pathname.includes('/records/')).length,
+      read_successes: readStats.successes,
+      read_skipped: readStats.skipped,
+      read_errors: topReadErrors(readStats.errors),
     },
     filters: {
       include_smoke: includeSmoke,
@@ -387,6 +405,7 @@ function buildMarkdown(summary, outDir) {
     `Visitors with lead: ${summary.visitors.with_lead}`,
     `Visitors with payment: ${summary.visitors.with_payment}`,
     `Events: ${summary.events.total}`,
+    `Blob read skipped: ${summary.blob.read_skipped}`,
     `Excluded test visitors: ${summary.filters.excluded_test_visitors}`,
     '',
     '## Funnel',
@@ -419,18 +438,55 @@ async function run() {
   if (!Number.isInteger(limit) || limit < 1) {
     throw new Error('--limit must be a positive integer');
   }
+  const maxReadErrors = Number(arg('max-read-errors') || DEFAULT_MAX_READ_ERRORS);
+  if (!Number.isInteger(maxReadErrors) || maxReadErrors < 1) {
+    throw new Error('--max-read-errors must be a positive integer');
+  }
+  const warnLimit = Number(arg('warn-limit') || DEFAULT_WARN_LIMIT);
+  if (!Number.isInteger(warnLimit) || warnLimit < 0) {
+    throw new Error('--warn-limit must be a non-negative integer');
+  }
 
   const includeSmoke = hasFlag('include-smoke');
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const outDir = path.resolve(arg('out-dir') || path.join('tmp', 'analytics-blob-report', timestamp));
   const blobItems = await listBlobItems(prefix, limit);
   const visitors = new Map();
+  const readStats = {
+    successes: 0,
+    skipped: 0,
+    errors: {},
+  };
+  let consecutiveReadErrors = 0;
 
   for (const item of blobItems) {
-    const json = await readBlobJson(item.pathname).catch((error) => {
-      console.warn(`[analytics-blob-report] skipped ${item.pathname}: ${error?.message || error}`);
-      return null;
-    });
+    let json = null;
+    try {
+      json = await readBlobJson(item.pathname);
+      consecutiveReadErrors = 0;
+      if (json) readStats.successes += 1;
+    } catch (error) {
+      const message = readErrorMessage(error);
+      readStats.skipped += 1;
+      readStats.errors[message] = (readStats.errors[message] || 0) + 1;
+      consecutiveReadErrors += 1;
+
+      if (readStats.skipped <= warnLimit) {
+        console.warn(`[analytics-blob-report] skipped ${item.pathname}: ${message}`);
+      } else if (readStats.skipped === warnLimit + 1) {
+        console.warn('[analytics-blob-report] further skipped blob reads suppressed; see summary blob.read_errors.');
+      }
+
+      if (readStats.successes === 0 && consecutiveReadErrors >= maxReadErrors) {
+        const topError = Object.entries(readStats.errors).sort((a, b) => b[1] - a[1])[0]?.[0] || message;
+        throw new Error(
+          `Blob listing succeeded but the first ${consecutiveReadErrors} object reads failed. ` +
+            `Top error: ${topError}. Check BLOB_READ_WRITE_TOKEN store/access, or raise --max-read-errors.`
+        );
+      }
+
+      continue;
+    }
     if (!json) continue;
 
     const visitorHash = hashFromPathname(item.pathname);
@@ -448,7 +504,7 @@ async function run() {
 
   const visibleVisitors = includeSmoke ? allVisitors : allVisitors.filter((visitor) => !isTestVisitor(visitor));
   const { visitorRows, eventRows } = buildRows(visibleVisitors);
-  const summary = buildSummary(allVisitors, visibleVisitors, blobItems, includeSmoke);
+  const summary = buildSummary(allVisitors, visibleVisitors, blobItems, includeSmoke, readStats);
   const report = buildMarkdown(summary, outDir);
 
   await fs.mkdir(outDir, { recursive: true });
@@ -474,17 +530,17 @@ async function run() {
     'occurred_at',
     'event_name',
     'source',
-	    'page_path',
-	    'intent',
-	    'product',
-	    'service',
-	    'label',
-	    'href',
-	    'cta_position',
-	    'checkout_type',
-	    'provider',
-	    'form_name',
-	    'traffic_source',
+    'page_path',
+    'intent',
+    'product',
+    'service',
+    'label',
+    'href',
+    'cta_position',
+    'checkout_type',
+    'provider',
+    'form_name',
+    'traffic_source',
     'landing_page',
     'is_test',
   ]));
