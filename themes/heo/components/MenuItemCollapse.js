@@ -16,6 +16,9 @@ export const MenuItemCollapse = ({ link }) => {
   const [show, changeShow] = useState(false)
   const visibleSubMenus = (link?.subMenus || []).filter(sLink => !isBlockedMenuHref(sLink?.href))
   const hasSubMenu = visibleSubMenus.length > 0
+  const linkClassName = link?.highlight
+    ? 'font-semibold flex justify-between rounded-lg bg-indigo-600 px-3 py-2 text-white no-underline tracking-widest shadow-sm dark:bg-yellow-500 dark:text-slate-950'
+    : 'font-extralight flex justify-between pl-2 pr-4 dark:text-gray-200 no-underline tracking-widest'
 
   const [isOpen, changeIsOpen] = useState(false)
 
@@ -40,7 +43,7 @@ export const MenuItemCollapse = ({ link }) => {
           <SmartLink
             href={link?.href}
             target={link?.target}
-            className='font-extralight  flex justify-between pl-2 pr-4 dark:text-gray-200 no-underline tracking-widest'>
+            className={linkClassName}>
             <span className=' transition-all items-center duration-200'>{link?.name}</span>
           </SmartLink>
         )}

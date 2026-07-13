@@ -10,6 +10,9 @@ export const MenuItemDrop = ({ link }) => {
   const [show, changeShow] = useState(false)
   const visibleSubMenus = (link?.subMenus || []).filter(sLink => !isBlockedMenuHref(sLink?.href))
   const hasSubMenu = visibleSubMenus.length > 0
+  const itemClassName = link?.highlight
+    ? 'rounded-2xl flex justify-center items-center px-3 py-1 no-underline tracking-widest bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 dark:bg-yellow-500 dark:text-slate-950 dark:hover:bg-yellow-400'
+    : 'hover:bg-black hover:bg-opacity-10 rounded-2xl flex justify-center items-center px-3 py-1 no-underline tracking-widest'
 
   if (!link || !link.show || isBlockedMenuHref(link?.href)) {
     return null
@@ -24,7 +27,7 @@ export const MenuItemDrop = ({ link }) => {
         <SmartLink
           target={link?.target}
           href={link?.href}
-          className=' hover:bg-black hover:bg-opacity-10 rounded-2xl flex justify-center items-center px-3 py-1 no-underline tracking-widest'>
+          className={itemClassName}>
           {link?.name}
         </SmartLink>
       )}

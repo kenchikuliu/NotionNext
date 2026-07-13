@@ -2,6 +2,7 @@ import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import CONFIG from '../config'
 import { MenuItemDrop } from './MenuItemDrop'
+import { withShowcaseMenuEntry } from './showcaseMenuEntry'
 
 export const MenuListTop = props => {
   const { customNav, customMenu } = props
@@ -36,6 +37,8 @@ export const MenuListTop = props => {
   if (siteConfig('CUSTOM_MENU')) {
     links = customMenu
   }
+
+  links = withShowcaseMenuEntry(links)
 
   if (!links || links.length === 0) {
     return null
