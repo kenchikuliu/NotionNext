@@ -47,6 +47,7 @@
     "health-check": "node scripts/health-check.js",
     "seo:sitemap-audit": "node scripts/seo-sitemap-audit.js",
     "analytics:blob-report": "node scripts/analytics-blob-report.mjs",
+    "analytics:lead-outcomes": "node scripts/notion-lead-outcome-report.mjs",
     "ga4:gsc:pipeline": "node scripts/ga4-gsc-pipeline.mjs",
     "ga4:key-events": "node scripts/ga4-key-events.mjs",
     "image:sync-r2": "node scripts/r2-image-sync.js",

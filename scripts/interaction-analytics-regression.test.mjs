@@ -28,6 +28,10 @@ const blobReportSource = fs.readFileSync(
   new URL('../scripts/analytics-blob-report.mjs', import.meta.url),
   'utf8'
 )
+const leadOutcomeReportSource = fs.readFileSync(
+  new URL('../scripts/notion-lead-outcome-report.mjs', import.meta.url),
+  'utf8'
+)
 const paidCtaSource = fs.readFileSync(
   new URL('../themes/heo/components/PaidIntentCta.js', import.meta.url),
   'utf8'
@@ -179,4 +183,15 @@ test('paid intent surfaces are explicitly tracked through the funnel', () => {
   assert.match(checkoutStatusSource, /cancelled_email/)
   assert.match(blobReportSource, /product: properties\.product/)
   assert.match(blobReportSource, /checkout_type: properties\.checkout_type/)
+})
+
+test('lead outcome report audits manual revenue closure fields', () => {
+  assert.match(leadOutcomeReportSource, /LEAD_NOTION_DATABASE_ID/)
+  assert.match(leadOutcomeReportSource, /NOTION_API_KEY/)
+  assert.match(leadOutcomeReportSource, /revenue usd/i)
+  assert.match(leadOutcomeReportSource, /closed at/i)
+  assert.match(leadOutcomeReportSource, /outcome note/i)
+  assert.match(leadOutcomeReportSource, /unresolved-leads\.csv/)
+  assert.match(leadOutcomeReportSource, /apply-default-status/)
+  assert.match(leadOutcomeReportSource, /--yes/)
 })
