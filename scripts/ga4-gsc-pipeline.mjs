@@ -1,6 +1,16 @@
 #!/usr/bin/env node
+import { createSign } from 'node:crypto';
+import { execFile as execFileCallback } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { promisify } from 'node:util';
+
+const execFile = promisify(execFileCallback);
+
+const GOOGLE_SCOPES = [
+  'https://www.googleapis.com/auth/analytics.readonly',
+  'https://www.googleapis.com/auth/webmasters.readonly',
+];
 function arg(name) {
   const eq = `--${name}=`;
   const hit = process.argv.find((a) => a.startsWith(eq));
@@ -11,7 +21,7 @@ function arg(name) {
 }
 
 function usage() {
-  console.log(`GA4 + GSC pipeline\n\nUsage:\n  node scripts/ga4-gsc-pipeline.mjs\n  node scripts/ga4-gsc-pipeline.mjs --days 7\n  node scripts/ga4-gsc-pipeline.mjs --start-date 2026-05-01 --end-date 2026-05-10\n\nRequired env:\n  GA4_PROPERTY_ID\n  GSC_SITE_URL\n  GOOGLE_API_ACCESS_TOKEN OR (GOOGLE_OAUTH_CLIENT_ID + GOOGLE_OAUTH_CLIENT_SECRET + GOOGLE_OAUTH_REFRESH_TOKEN)`);
+  console.log(`GA4 + GSC pipeline\n\nUsage:\n  node scripts/ga4-gsc-pipeline.mjs\n  node scripts/ga4-gsc-pipeline.mjs --days 7\n  node scripts/ga4-gsc-pipeline.mjs --start-date 2026-05-01 --end-date 2026-05-10\n\nRequired env:\n  GA4_PROPERTY_ID\n  GSC_SITE_URL\n  GOOGLE_API_ACCESS_TOKEN OR GOOGLE_SERVICE_ACCOUNT_KEY_JSON/GOOGLE_SERVICE_ACCOUNT_KEY_PATH OR (GOOGLE_OAUTH_CLIENT_ID + GOOGLE_OAUTH_CLIENT_SECRET + GOOGLE_OAUTH_REFRESH_TOKEN)`);
 }
 
 function utcDate(d) {
@@ -37,6 +47,24 @@ async function configureProxy() {
   }
 }
 
+async function requestText(url, options = {}) {
+  try {
+    const response = await fetch(url, { ...options, signal: options.signal || AbortSignal.timeout(5_000) });
+    return { ok: response.ok, status: response.status, text: await response.text() };
+  } catch {
+    const args = ['--silent', '--show-error', '--connect-timeout', '10', '--max-time', '30', '--request', options.method || 'GET'];
+    for (const [name, value] of Object.entries(options.headers || {})) {
+      args.push('--header', `${name}: ${value}`);
+    }
+    if (options.body !== undefined) args.push('--data-binary', String(options.body));
+    args.push('--write-out', '\n%{http_code}', url);
+    const { stdout } = await execFile('curl', args, { env: process.env, maxBuffer: 20 * 1024 * 1024 });
+    const splitAt = stdout.lastIndexOf('\n');
+    const status = Number(stdout.slice(splitAt + 1));
+    return { ok: status >= 200 && status < 300, status, text: stdout.slice(0, splitAt) };
+  }
+}
+
 function minusDays(dateStr, days) {
   const d = new Date(`${dateStr}T00:00:00.000Z`);
   d.setUTCDate(d.getUTCDate() - days);
@@ -47,11 +75,47 @@ async function getAccessToken() {
   const direct = process.env.GOOGLE_API_ACCESS_TOKEN?.trim();
   if (direct) return direct;
 
+  const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY_JSON?.trim();
+  const serviceAccountPath = process.env.GOOGLE_SERVICE_ACCOUNT_KEY_PATH?.trim();
+  if (serviceAccountJson || serviceAccountPath) {
+    const raw = serviceAccountJson || (await fs.readFile(serviceAccountPath, 'utf8'));
+    const key = JSON.parse(raw);
+    if (!key.client_email || !key.private_key) {
+      throw new Error('Service account key must include client_email and private_key.');
+    }
+
+    const tokenUri = key.token_uri || 'https://oauth2.googleapis.com/token';
+    const now = Math.floor(Date.now() / 1000);
+    const encode = (value) => Buffer.from(JSON.stringify(value)).toString('base64url');
+    const signingInput = `${encode({ alg: 'RS256', typ: 'JWT' })}.${encode({
+      iss: key.client_email,
+      scope: GOOGLE_SCOPES.join(' '),
+      aud: tokenUri,
+      exp: now + 3600,
+      iat: now,
+    })}`;
+    const signature = createSign('RSA-SHA256').update(signingInput).sign(key.private_key);
+    const body = new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: `${signingInput}.${signature.toString('base64url')}`,
+    });
+    const response = await requestText(tokenUri, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    });
+    const text = response.text;
+    if (!response.ok) throw new Error(`Service account token failed: ${response.status} ${text}`);
+    const token = JSON.parse(text).access_token;
+    if (!token) throw new Error('Service account token response missing access_token.');
+    return token;
+  }
+
   const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID?.trim();
   const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET?.trim();
   const refreshToken = process.env.GOOGLE_OAUTH_REFRESH_TOKEN?.trim();
   if (!clientId || !clientSecret || !refreshToken) {
-    throw new Error('Missing auth env. Provide GOOGLE_API_ACCESS_TOKEN or OAuth trio.');
+    throw new Error('Missing auth env. Provide an access token, service account key, or OAuth trio.');
   }
 
   const body = new URLSearchParams({
@@ -61,12 +125,12 @@ async function getAccessToken() {
     grant_type: 'refresh_token',
   });
 
-  const res = await fetch('https://oauth2.googleapis.com/token', {
+  const res = await requestText('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body,
   });
-  const txt = await res.text();
+  const txt = res.text;
   if (!res.ok) throw new Error(`Token refresh failed: ${res.status} ${txt}`);
 
   const json = JSON.parse(txt);
@@ -75,7 +139,7 @@ async function getAccessToken() {
 }
 
 async function postJson(url, token, body) {
-  const res = await fetch(url, {
+  const res = await requestText(url, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -83,7 +147,7 @@ async function postJson(url, token, body) {
     },
     body: JSON.stringify(body),
   });
-  const txt = await res.text();
+  const txt = res.text;
   let json = {};
   try {
     json = txt ? JSON.parse(txt) : {};
