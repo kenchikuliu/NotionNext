@@ -14,6 +14,21 @@ const imageCdnHost = (() => {
   }
 })()
 
+const metadataAssetRedirects = [
+  ['/icon.png', '/favicon.ico'],
+  ['/apple-icon.png', '/favicon.ico'],
+  ['/apple-touch-icon.png', '/favicon.ico'],
+  ['/opengraph-image', '/bg_image.jpg'],
+  ['/twitter-image', '/bg_image.jpg'],
+  ['/og-image.png', '/bg_image.jpg'],
+  ['/og', '/bg_image.jpg'],
+  ['/og/home.svg', '/bg_image.jpg']
+].map(([source, destination]) => ({
+  source,
+  destination,
+  permanent: false
+}))
+
 // 打包时是否分析代码
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: BLOG.BUNDLE_ANALYZER
@@ -149,6 +164,7 @@ const nextConfig = {
     ? undefined
     : () => {
         return [
+          ...metadataAssetRedirects,
           {
             source: '/feed',
             destination: '/rss/feed.xml',
@@ -167,6 +183,51 @@ const nextConfig = {
           {
             source: '/干货分享/zotero-arxiv-daily',
             destination: '/article/zotero-arxiv-daily',
+            permanent: true
+          },
+          {
+            source: '/article/Manusfree',
+            destination: '/news/Manusfree',
+            permanent: true
+          },
+          {
+            source: '/article/manusfree',
+            destination: '/news/Manusfree',
+            permanent: true
+          },
+          {
+            source: '/article/Ultralight-Digital-Human',
+            destination: '/sharing/Ultralight-Digital-Human',
+            permanent: true
+          },
+          {
+            source: '/article/ultralight-digital-human',
+            destination: '/sharing/Ultralight-Digital-Human',
+            permanent: true
+          },
+          {
+            source: '/article/attention',
+            destination: '/sharing/attention',
+            permanent: true
+          },
+          {
+            source: '/article/ChatNio',
+            destination: '/news/ChatNio',
+            permanent: true
+          },
+          {
+            source: '/article/chatnio',
+            destination: '/news/ChatNio',
+            permanent: true
+          },
+          {
+            source: '/article/ReadKids',
+            destination: '/sharing/ReadKids',
+            permanent: true
+          },
+          {
+            source: '/article/readkids',
+            destination: '/sharing/ReadKids',
             permanent: true
           }
         ]
@@ -303,30 +364,6 @@ const nextConfig = {
       THEME
     )
 
-    // 性能优化配置
-    if (!dev) {
-      // 生产环境优化
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
-            common: {
-              name: 'common',
-              minChunks: 2,
-              chunks: 'all',
-              enforce: true,
-            },
-          },
-        },
-      }
-    }
-
     // Enable source maps in development mode
     if (dev || process.env.NODE_ENV_API === 'development') {
       config.devtool = 'eval-source-map'
@@ -353,7 +390,15 @@ const nextConfig = {
     const pages = { ...defaultPathMap }
     delete pages['/sitemap.xml']
     delete pages['/auth']
+    delete pages['/manifest.json']
+    delete pages['/site.webmanifest']
+    delete pages['/rss/feed.xml']
+    delete pages['/search/[keyword]']
+    delete pages['/search/[keyword]/page/[page]']
     return pages
+  },
+  env: {
+    NEXT_PUBLIC_STATIC_EXPORT: process.env.EXPORT ? 'true' : 'false'
   },
   publicRuntimeConfig: {
     // 这里的配置既可以服务端获取到，也可以在浏览器端获取到
