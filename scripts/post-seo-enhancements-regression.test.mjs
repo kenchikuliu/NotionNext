@@ -42,6 +42,13 @@ test('charliiai Bing page opportunities have intent-matched snippets', () => {
   assert.match(source, /如何使用引流宝/)
 })
 
+test('post SEO enhancements resolve on canonical news and sharing routes', () => {
+  assert.match(source, /'news'/)
+  assert.match(source, /'sharing'/)
+  assert.match(source, /Manus Free Access Guide/)
+  assert.match(source, /article\/manusfree/)
+})
+
 test('ranked legacy article URLs redirect to their live canonical routes', () => {
   assert.match(
     redirects,
