@@ -18,7 +18,9 @@ const normalizePageId = value =>
   typeof value === 'string' ? value.replace(/-/g, '').trim().toLowerCase() : ''
 
 const LEGACY_ROUTE_REDIRECTS = {
-  '干货分享/zotero-arxiv-daily': 'article/zotero-arxiv-daily'
+  '干货分享/zotero-arxiv-daily': 'article/zotero-arxiv-daily',
+  'article/pmrf': 'en-US/article/PMRF',
+  'news/pmrf': 'en-US/article/PMRF'
 }
 
 const DEFAULT_LOCALE_CANONICAL_REDIRECTS = {

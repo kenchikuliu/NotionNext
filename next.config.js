@@ -229,6 +229,31 @@ const nextConfig = {
             source: '/article/readkids',
             destination: '/sharing/ReadKids',
             permanent: true
+          },
+          {
+            source: '/article/pmrf',
+            destination: '/en-US/article/PMRF',
+            permanent: true
+          },
+          {
+            source: '/article/PMRF',
+            destination: '/en-US/article/PMRF',
+            permanent: true
+          },
+          {
+            source: '/en-US/article/pmrf',
+            destination: '/en-US/article/PMRF',
+            permanent: true
+          },
+          {
+            source: '/news/pmrf',
+            destination: '/en-US/article/PMRF',
+            permanent: true
+          },
+          {
+            source: '/news/PMRF',
+            destination: '/en-US/article/PMRF',
+            permanent: true
           }
         ]
       },

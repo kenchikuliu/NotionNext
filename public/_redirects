@@ -13,6 +13,11 @@
 /article/chatnio /news/ChatNio 301
 /article/ReadKids /sharing/ReadKids 301
 /article/readkids /sharing/ReadKids 301
+/article/pmrf /en-US/article/PMRF 301
+/article/PMRF /en-US/article/PMRF 301
+/en-US/article/pmrf /en-US/article/PMRF 301
+/news/pmrf /en-US/article/PMRF 301
+/news/PMRF /en-US/article/PMRF 301
 /category/categorycategorycategorycategory /category 302
 /category/aicategorycategory /category/ai-business 301
 /en-US/category/categorycategorycategorycategory /en-US/category 302
