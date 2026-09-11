@@ -107,6 +107,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script defer src='https://website-growth-events.kenchikuliu.workers.dev/growth.js' data-privacy='/privacy-policy' />
         </body>
       </Html>
     )
