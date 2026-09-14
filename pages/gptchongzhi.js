@@ -7,6 +7,7 @@ import RechargeInquiryForm from '@/components/RechargeInquiryForm'
 import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
+import { inferLocaleFromPath } from '@/lib/utils/localePath'
 
 const zhContent = {
   eyebrow: 'GPT',
@@ -37,7 +38,7 @@ const zhContent = {
   },
   contactTitle: '主联系邮箱',
   contactText: '请发邮件，并在标题中注明“GPT 充值”。',
-  email: 'charliiai2024@gmail.com'
+  email: 'hello@charliiai.com'
 }
 
 const enContent = {
@@ -70,12 +71,13 @@ const enContent = {
   },
   contactTitle: 'Primary contact email',
   contactText: 'Email us and include “GPT Recharge” in the subject line.',
-  email: 'charliiai2024@gmail.com'
+  email: 'hello@charliiai.com'
 }
 
-const GptRechargePage = () => {
-  const { locale } = useRouter()
-  const isEnglish = locale === 'en-US'
+const GptRechargePage = ({ pageLocale }) => {
+  const { locale, asPath } = useRouter()
+  const isEnglish =
+    (pageLocale || inferLocaleFromPath(asPath, locale)) === 'en-US'
   const content = isEnglish ? enContent : zhContent
 
   return (
