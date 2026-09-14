@@ -398,9 +398,9 @@ const EnglishAboutPage = () => {
                   Primary email
                 </div>
                 <a
-                  href='mailto:charliiai2024@gmail.com'
+                  href='mailto:hello@charliiai.com'
                   className='mt-2 inline-block text-lg font-semibold text-white hover:text-cyan-300'>
-                  charliiai2024@gmail.com
+                  hello@charliiai.com
                 </a>
               </div>
               <div>
@@ -815,9 +815,9 @@ const AboutPage = () => {
                   Primary email
                 </div>
                 <a
-                  href='mailto:charliiai2024@gmail.com'
+                  href='mailto:hello@charliiai.com'
                   className='mt-2 inline-block text-lg font-semibold text-white hover:text-cyan-300'>
-                  charliiai2024@gmail.com
+                  hello@charliiai.com
                 </a>
                 <p className='mt-2 text-sm leading-6 text-slate-400'>
                   Best for partnerships, media, consulting, and international inquiries.
