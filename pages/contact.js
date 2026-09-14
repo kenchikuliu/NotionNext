@@ -2,10 +2,12 @@ import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalid
 import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
+import { inferLocaleFromPath } from '@/lib/utils/localePath'
 
-const ContactPage = () => {
-  const { locale } = useRouter()
-  const isEnglish = locale === 'en-US'
+const ContactPage = ({ pageLocale }) => {
+  const { locale, asPath } = useRouter()
+  const isEnglish =
+    (pageLocale || inferLocaleFromPath(asPath, locale)) === 'en-US'
 
   return (
     <main className='px-5 py-10 sm:py-14'>
@@ -31,9 +33,9 @@ const ContactPage = () => {
                 {isEnglish ? 'Primary email' : '主邮箱'}
               </div>
               <a
-                href='mailto:charliiai2024@gmail.com'
+                href='mailto:hello@charliiai.com'
                 className='mt-3 inline-block text-2xl font-bold text-slate-950 hover:text-cyan-700'>
-                charliiai2024@gmail.com
+                hello@charliiai.com
               </a>
               <p className='mt-3 text-sm leading-7 text-slate-600'>
                 {isEnglish

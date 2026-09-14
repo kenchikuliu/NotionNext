@@ -2,6 +2,7 @@ import { ISR_LIST_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalid
 import { publicAssetUrl } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { useRouter } from 'next/router'
+import { inferLocaleFromPath } from '@/lib/utils/localePath'
 
 const zhContent = {
   eyebrow: 'Terms',
@@ -33,7 +34,7 @@ const zhContent = {
   ],
   contactTitle: '联系条款相关问题',
   contactText: '如对服务条款有任何问题，请优先发送邮件至主邮箱。',
-  email: 'charliiai2024@gmail.com'
+  email: 'hello@charliiai.com'
 }
 
 const enContent = {
@@ -66,12 +67,13 @@ const enContent = {
   ],
   contactTitle: 'Questions about these terms',
   contactText: 'For terms-related questions, email the primary contact address.',
-  email: 'charliiai2024@gmail.com'
+  email: 'hello@charliiai.com'
 }
 
-const TermsPage = () => {
-  const { locale } = useRouter()
-  const isEnglish = locale === 'en-US'
+const TermsPage = ({ pageLocale }) => {
+  const { locale, asPath } = useRouter()
+  const isEnglish =
+    (pageLocale || inferLocaleFromPath(asPath, locale)) === 'en-US'
   const content = isEnglish ? enContent : zhContent
 
   return (
