@@ -1,18 +1,19 @@
 import { ArrowSmallRight } from '@/components/HeroIcons'
 import { siteConfig } from '@/lib/config'
 import { getLocaleConfig } from '@/lib/locale-config'
+import { useGlobal } from '@/lib/global'
 import { subscribeToNewsletter } from '@/lib/plugins/mailchimp'
 import { trackCtaClick } from '@/lib/plugins/tracking'
 import { trackInteractionEvent } from '@/components/InteractionAnalytics'
 import SmartLink from '@/components/SmartLink'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import CONFIG from '../config'
 
-export default function HomeCta() {
-  const router = useRouter()
-  const { locale } = router
+export default function HomeCta({ pageLocale }) {
+  const { lang } = useGlobal()
+  const locale = pageLocale || lang
   const [email, setEmail] = useState('')
+  const [consent, setConsent] = useState(false)
   const [status, setStatus] = useState('idle')
   const [message, setMessage] = useState('')
 
@@ -79,30 +80,23 @@ export default function HomeCta() {
         email,
         locale: locale || 'zh-CN',
         source: 'heo_home_cta',
-        pageUrl:
-          typeof window !== 'undefined' ? window.location.href : '',
-        referrer:
-          typeof document !== 'undefined' ? document.referrer : ''
+        newsletter_consent: consent,
+        pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+        referrer: typeof document !== 'undefined' ? document.referrer : ''
       })
       if (response?.status !== 'success') {
         throw new Error(response?.message || 'Subscription failed')
       }
       setStatus('success')
-      trackInteractionEvent('lead_submitted', {
+      trackInteractionEvent('subscription_requested', {
         form_name: 'heo_home_cta',
         source: 'newsletter',
-        stored_in_notion: response?.stored_in_notion,
-        owner_notified: response?.owner_notified,
-        user_notified: response?.user_notified,
-        page_path: typeof window !== 'undefined' ? window.location.pathname : undefined
+        page_path:
+          typeof window !== 'undefined' ? window.location.pathname : undefined
       })
-      setMessage(
-        response?.user_notified === false &&
-          response?.stored_in_notion === true
-          ? `${successMessage}（已记录，确认邮件暂未发送）`
-          : successMessage
-      )
+      setMessage(response?.duplicate ? response.message : successMessage)
       setEmail('')
+      setConsent(false)
     } catch (error) {
       setStatus('error')
       setMessage(error?.message || fallbackMessage)
@@ -133,7 +127,8 @@ export default function HomeCta() {
 
             <form
               onSubmit={handleFormSubmit}
-              className='relative z-10 w-full max-w-xl rounded-[24px] border border-white/15 bg-white/10 p-4 backdrop-blur-md'>
+              className='relative z-10 w-full max-w-xl rounded-[24px] border border-white/15 bg-white/10 p-4 backdrop-blur-md'
+            >
               <div className='flex flex-col gap-3 sm:flex-row'>
                 <input
                   type='email'
@@ -148,13 +143,32 @@ export default function HomeCta() {
                 <button
                   type='submit'
                   disabled={status === 'loading' || status === 'success'}
-                  className='inline-flex h-12 items-center justify-center rounded-2xl bg-cyan-400 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:bg-emerald-400 sm:min-w-[152px]'>
+                  className='inline-flex h-12 items-center justify-center rounded-2xl bg-cyan-400 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:bg-emerald-400 sm:min-w-[152px]'
+                >
                   {status === 'loading'
                     ? '...'
                     : status === 'success'
-                      ? 'Subscribed'
+                      ? locale === 'en-US'
+                        ? 'Check inbox'
+                        : '请查收邮件'
                       : buttonText}
                 </button>
+              </div>
+
+              <div className='mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'>
+                <label className='flex items-center gap-2 text-xs text-slate-200'>
+                  <input
+                    type='checkbox'
+                    checked={consent}
+                    onChange={event => setConsent(event.target.checked)}
+                    required
+                    disabled={status === 'loading' || status === 'success'}
+                    className='h-4 w-4 accent-cyan-400'
+                  />
+                  {locale === 'en-US'
+                    ? 'I agree to receive Charlii AI updates by email.'
+                    : '我同意通过邮件接收 Charlii AI 更新。'}
+                </label>
               </div>
 
               <div className='mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'>
@@ -165,7 +179,8 @@ export default function HomeCta() {
                       : status === 'success'
                         ? 'text-emerald-200'
                         : 'text-slate-300'
-                  }`}>
+                  }`}
+                >
                   {message || note}
                 </p>
 
@@ -176,8 +191,10 @@ export default function HomeCta() {
                       trackCtaClick({
                         location: 'heo_home_cta',
                         label: 'secondary_link'
-                      })}
-                    className='inline-flex items-center text-sm font-medium text-white/90 transition hover:text-white'>
+                      })
+                    }
+                    className='inline-flex items-center text-sm font-medium text-white/90 transition hover:text-white'
+                  >
                     {secondaryText}
                     <ArrowSmallRight className='ml-1 h-4 w-4 stroke-2' />
                   </SmartLink>

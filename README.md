@@ -30,7 +30,9 @@ Notion是一个能让效率暴涨的生产力引擎，可以帮你书写文档�
 
 <hr/>
 
-一个使用 NextJS + Notion API 实现的，部署在 Vercel 上的静态博客系统。为Notion和所有创作者设计。
+原版是基于 NextJS + Notion API 的博客系统；本站 CharliiAI 部署在 Cloudflare Pages。
+
+CharliiAI production is hosted on Cloudflare Pages (`charliiai-main`). Its contact and transactional sender is `hello@charliiai.com`; verified newsletter opt-ins notify `kenchikuliu@outlook.com`. Inbound Email Routing is separate and was not re-audited as part of the newsletter work. The transactional provider is Cloudflare Email Service through Website Growth Collector. A protected, dry-run-by-default sync can move confirmed subscribers to the separate Resend `Learn.CharliiAI` segment, but no Broadcast is enabled or sent. Double opt-in, unsubscribe, and the guarded audience sync are deployed and production-tested; see [Newsletter subscription](docs/NEWSLETTER_SUBSCRIPTION.md) for the deployment ID and remaining limits.
 
 ## Analytics
 

@@ -68,16 +68,19 @@ const CONFIG = {
     'en-US': 'Subscribe'
   },
   HEO_HOME_CTA_SUCCESS: {
-    'zh-CN': '订阅成功，后续更新会发到你的邮箱。',
-    'en-US': 'Subscribed. Future updates will be sent to your inbox.'
+    'zh-CN': '请查收验证邮件，确认后订阅才会生效。',
+    'en-US': 'Check your inbox. Your subscription starts after verification.'
   },
   HEO_HOME_CTA_ERROR: {
     'zh-CN': '订阅失败，请稍后重试或直接从联系页联系我。',
-    'en-US': 'Subscription failed. Try again later or reach out from the contact page.'
+    'en-US':
+      'Subscription failed. Try again later or reach out from the contact page.'
   },
   HEO_HOME_CTA_NOTE: {
-    'zh-CN': '不发垃圾邮件。你也可以直接从联系页发合作需求。',
-    'en-US': 'No spam. You can also send a collaboration request from the contact page.'
+    'zh-CN':
+      '订阅即同意接收 Charlii AI 更新，可随时退订；合作需求也可从联系页提交。',
+    'en-US':
+      'Subscribe to receive Charlii AI updates. Unsubscribe anytime, or use the contact page for collaboration requests.'
   },
   HEO_HOME_CTA_SECONDARY_TEXT: {
     'zh-CN': '查看联系页',

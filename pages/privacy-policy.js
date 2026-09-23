@@ -24,6 +24,10 @@ const zhContent = {
       text: '本站可能使用 Cookies 以及第三方统计、广告或性能服务，例如分析工具与广告平台，用于了解访问情况并改进体验。具体第三方服务可能随站点运营需要调整。'
     },
     {
+      heading: '邮件订阅',
+      text: '如果你在首页勾选同意并确认订阅，我们会保存邮箱、订阅来源和确认时间，用于发送你主动请求的 Charlii AI 更新。验证邮件通过 Cloudflare Email Service 发送；已确认的订阅地址只有在受保护的同步流程中才会进入独立营销邮件服务。你可以随时通过邮件中的退订链接退出。'
+    },
+    {
       heading: 'Google AdSense 与广告 Cookie',
       text: '本站可能使用 Google AdSense 展示广告。Google 及其合作伙伴可能使用 Cookie 或类似技术，根据你访问本站或其他网站的情况投放个性化或非个性化广告。你可以通过 Google 广告设置页面 https://adssettings.google.com/ 管理或退出个性化广告，也可以在浏览器中限制 Cookie。'
     },
@@ -59,6 +63,10 @@ const enContent = {
     {
       heading: 'Cookies and third-party services',
       text: 'The site may use cookies and third-party analytics, advertising, or performance services to understand traffic and improve the user experience. The exact service mix may change as the site evolves.'
+    },
+    {
+      heading: 'Email subscriptions',
+      text: 'If you check the consent box and confirm a subscription, we store your email address, subscription source, and confirmation time to send the Charlii AI updates you requested. Verification mail is sent through Cloudflare Email Service. Confirmed addresses enter the separate marketing email provider only through a protected synchronization process. You can unsubscribe at any time using the link in an email.'
     },
     {
       heading: 'Google AdSense and advertising cookies',
