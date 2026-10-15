@@ -1,6 +1,7 @@
 import { useGlobal } from '@/lib/global'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { resolveTrafficSource } from '@/lib/analytics/traffic-source'
 
 const FIRST_TOUCH_STORAGE_KEY = 'charliiai:analytics:first_touch'
 const ACTIVE_USER_STORAGE_KEY = 'charliiai:analytics:active_user_id'
@@ -122,16 +123,6 @@ function safeRemoveStorage(storage, key) {
   }
 }
 
-function getReferrerHost(rawReferrer) {
-  if (!rawReferrer) return undefined
-
-  try {
-    return new URL(rawReferrer).hostname || undefined
-  } catch {
-    return undefined
-  }
-}
-
 function getStoredFirstTouch() {
   if (typeof window === 'undefined') return {}
 
@@ -173,16 +164,22 @@ function captureFirstTouch() {
   const params = new URLSearchParams(window.location.search)
   const landingPath = window.location.pathname || '/'
   const referrer = document.referrer || undefined
+  const campaignSource = params.get('utm_source') || undefined
+  const { referrerHost, trafficSource, trafficMedium, attributionBasis } =
+    resolveTrafficSource({
+      referrer,
+      currentHostname: window.location.hostname,
+      campaignSource
+    })
   const attribution = cleanProperties({
     landing_page: `${landingPath}${window.location.search || ''}`,
     landing_path: landingPath,
     landing_url: window.location.href,
     referrer,
-    referrer_host: getReferrerHost(referrer),
-    traffic_source: params.get('utm_source') || getReferrerHost(referrer) || 'direct',
-    traffic_medium:
-      params.get('utm_medium') ||
-      (document.referrer ? 'referral' : 'none'),
+    referrer_host: referrerHost,
+    traffic_source: trafficSource,
+    traffic_medium: params.get('utm_medium') || trafficMedium,
+    attribution_basis: attributionBasis,
     traffic_campaign: params.get('utm_campaign') || undefined,
     traffic_content: params.get('utm_content') || undefined,
     traffic_term: params.get('utm_term') || undefined,
