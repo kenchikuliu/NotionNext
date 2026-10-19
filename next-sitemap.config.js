@@ -7,6 +7,8 @@ module.exports = {
   siteUrl: BLOG.LINK,
   changefreq: 'daily',
   priority: 0.7,
+  // The export build has no per-page edit dates. Avoid reporting build time as content updates.
+  autoLastmod: false,
   generateRobotsTxt: true,
   sitemapSize: 7000,
   robotsTxtOptions: {
