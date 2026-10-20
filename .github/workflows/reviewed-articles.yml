@@ -1,0 +1,34 @@
+name: reviewed-articles
+on:
+  pull_request:
+    paths:
+      - 'content/reviewed/**'
+      - 'lib/content/**'
+      - 'lib/notion/getPostBlocks.js'
+      - 'lib/notion/getPageProperties.js'
+      - 'lib/utils/post.js'
+      - 'public/resources/**'
+      - 'public/images/reviewed-20261020/**'
+      - 'scripts/reviewed-articles-regression.test.mjs'
+      - '.github/workflows/reviewed-articles.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/reviewed/**'
+      - 'lib/content/**'
+      - 'lib/notion/getPostBlocks.js'
+      - 'lib/notion/getPageProperties.js'
+      - 'lib/utils/post.js'
+      - 'public/resources/**'
+      - 'public/images/reviewed-20261020/**'
+permissions:
+  contents: read
+jobs:
+  reviewed-article-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/reviewed-articles-regression.test.mjs
