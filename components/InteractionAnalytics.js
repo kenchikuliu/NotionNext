@@ -101,7 +101,7 @@ function cleanProperties(properties = {}) {
 
 function safeReadStorage(storage, key) {
   try {
-    return storage.getItem(key)
+    return window[storage].getItem(key)
   } catch {
     return null
   }
@@ -109,7 +109,7 @@ function safeReadStorage(storage, key) {
 
 function safeWriteStorage(storage, key, value) {
   try {
-    storage.setItem(key, value)
+    window[storage].setItem(key, value)
   } catch {
     // noop
   }
@@ -117,7 +117,7 @@ function safeWriteStorage(storage, key, value) {
 
 function safeRemoveStorage(storage, key) {
   try {
-    storage.removeItem(key)
+    window[storage].removeItem(key)
   } catch {
     // noop
   }
@@ -126,7 +126,7 @@ function safeRemoveStorage(storage, key) {
 function getStoredFirstTouch() {
   if (typeof window === 'undefined') return {}
 
-  const raw = safeReadStorage(window.localStorage, FIRST_TOUCH_STORAGE_KEY)
+  const raw = safeReadStorage('localStorage', FIRST_TOUCH_STORAGE_KEY)
   if (!raw) return {}
 
   try {
@@ -139,7 +139,7 @@ function getStoredFirstTouch() {
 function getOrCreateVisitorId() {
   if (typeof window === 'undefined') return ''
 
-  const existing = safeReadStorage(window.localStorage, VISITOR_ID_STORAGE_KEY)
+  const existing = safeReadStorage('localStorage', VISITOR_ID_STORAGE_KEY)
   if (existing) {
     return String(existing).slice(0, 128)
   }
@@ -149,7 +149,7 @@ function getOrCreateVisitorId() {
       ? crypto.randomUUID()
       : `${Date.now()}-${Math.random().toString(16).slice(2)}`
 
-  safeWriteStorage(window.localStorage, VISITOR_ID_STORAGE_KEY, generated)
+  safeWriteStorage('localStorage', VISITOR_ID_STORAGE_KEY, generated)
   return generated.slice(0, 128)
 }
 
@@ -196,7 +196,7 @@ function captureFirstTouch() {
 
   if (Object.keys(attribution).length > 0) {
     safeWriteStorage(
-      window.localStorage,
+      'localStorage',
       FIRST_TOUCH_STORAGE_KEY,
       JSON.stringify(attribution)
     )
@@ -272,7 +272,7 @@ function setGtagUserId(userId) {
 function getActiveAnalyticsUserId() {
   if (typeof window === 'undefined') return undefined
 
-  const userId = safeReadStorage(window.sessionStorage, ACTIVE_USER_STORAGE_KEY)
+  const userId = safeReadStorage('sessionStorage', ACTIVE_USER_STORAGE_KEY)
   return userId ? String(userId).slice(0, 256) : undefined
 }
 
@@ -381,8 +381,13 @@ function getRouteContext() {
 }
 
 function trackOnce(storageKey, eventName, properties = {}) {
-  if (window.sessionStorage.getItem(storageKey)) return
-  window.sessionStorage.setItem(storageKey, '1')
+  try {
+    if (window.sessionStorage.getItem(storageKey)) return
+    window.sessionStorage.setItem(storageKey, '1')
+  } catch {
+    // Skip events that cannot be deduplicated when storage is blocked.
+    return
+  }
   trackInteractionEvent(eventName, properties)
 }
 
@@ -610,8 +615,12 @@ export default function InteractionAnalytics() {
         properties.form_name
       ].filter(Boolean).join(':')
 
-      if (window.sessionStorage.getItem(storageKey)) return
-      window.sessionStorage.setItem(storageKey, '1')
+      try {
+        if (window.sessionStorage.getItem(storageKey)) return
+        window.sessionStorage.setItem(storageKey, '1')
+      } catch {
+        return
+      }
 
       trackInteractionEvent(eventName, {
         ...properties,
@@ -734,13 +743,13 @@ export default function InteractionAnalytics() {
       return
     }
 
-    const activeUserId = safeReadStorage(window.sessionStorage, ACTIVE_USER_STORAGE_KEY)
+    const activeUserId = safeReadStorage('sessionStorage', ACTIVE_USER_STORAGE_KEY)
 
     if (isSignedIn && user?.id) {
       const userId = String(user.id).slice(0, 256)
       setGtagUserId(userId)
       if (activeUserId !== userId) {
-        safeWriteStorage(window.sessionStorage, ACTIVE_USER_STORAGE_KEY, userId)
+        safeWriteStorage('sessionStorage', ACTIVE_USER_STORAGE_KEY, userId)
       }
       void syncAnalyticsState({
         userId,
@@ -751,7 +760,7 @@ export default function InteractionAnalytics() {
 
     if (activeUserId) {
       setGtagUserId(null)
-      safeRemoveStorage(window.sessionStorage, ACTIVE_USER_STORAGE_KEY)
+      safeRemoveStorage('sessionStorage', ACTIVE_USER_STORAGE_KEY)
     }
   }, [isLoaded, isSignedIn, user?.id])
 

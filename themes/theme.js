@@ -212,7 +212,11 @@ export function isPreferDark() {
  * @returns {*}
  */
 export const loadDarkModeFromLocalStorage = () => {
-  return localStorage.getItem('darkMode')
+  try {
+    return localStorage.getItem('darkMode')
+  } catch {
+    return null
+  }
 }
 
 /**
@@ -220,5 +224,9 @@ export const loadDarkModeFromLocalStorage = () => {
  * @param newTheme
  */
 export const saveDarkModeToLocalStorage = newTheme => {
-  localStorage.setItem('darkMode', newTheme)
+  try {
+    localStorage.setItem('darkMode', newTheme)
+  } catch {
+    // The theme can still change when the browser blocks persistence.
+  }
 }
