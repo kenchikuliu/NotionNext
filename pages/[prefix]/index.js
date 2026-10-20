@@ -4,7 +4,7 @@ import { siteConfig } from '@/lib/config'
 import { getGlobalData, getPost } from '@/lib/db/getSiteData'
 import { useGlobal } from '@/lib/global'
 import { ISR_CONTENT_REVALIDATE, buildStaticPropsResult } from '@/lib/cache/revalidate'
-import { getPasswordQuery } from '@/lib/password'
+import { getPasswordQuery, rememberArticlePassword } from '@/lib/password'
 import { processPostData } from '@/lib/utils/post'
 import { DynamicLayout } from '@/themes/theme'
 import dynamic from 'next/dynamic'
@@ -84,7 +84,7 @@ const Slug = props => {
       const encrypt = md5(post?.slug + passInput)
       if (passInput && encrypt === post?.password) {
         setLock(false)
-        localStorage.setItem('password_' + router.asPath, passInput)
+        rememberArticlePassword(router.asPath, passInput)
         showNotification(locale.COMMON.ARTICLE_UNLOCK_TIPS)
         return true
       }
