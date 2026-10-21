@@ -9,6 +9,7 @@ on:
       - 'lib/utils/post.js'
       - 'public/resources/**'
       - 'public/images/reviewed-20261020/**'
+      - 'public/images/workflow-radar-20261021/**'
       - 'scripts/reviewed-articles-regression.test.mjs'
       - '.github/workflows/reviewed-articles.yml'
   push:
@@ -21,6 +22,7 @@ on:
       - 'lib/utils/post.js'
       - 'public/resources/**'
       - 'public/images/reviewed-20261020/**'
+      - 'public/images/workflow-radar-20261021/**'
 permissions:
   contents: read
 jobs:

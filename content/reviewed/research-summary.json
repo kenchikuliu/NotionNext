@@ -3,7 +3,7 @@
   "slug": "Tech/use-ai-summarize-research-faster",
   "title": "AI 总结论文后找不到出处？用证据表保留结论、条件与原文",
   "summary": "从一个明确问题开始，用来源编号、证据表和人工回查，把 AI 摘要变成能用于研究判断的笔记。附提示词与 CSV 模板。",
-  "reviewedAt": "2026-10-20T14:00:00.000Z",
+  "reviewedAt": "2026-10-21T03:00:00.000Z",
   "blocks": [
     {
       "type": "text",
@@ -136,6 +136,11 @@
       "type": "link",
       "text": "下一步：把研究笔记接进可验收的工作流",
       "href": "/Tech/ai-workflow-for-knowledge-workers-2026"
+    },
+    {
+      "type": "link",
+      "text": "继续按问题找教程和模板：Charlii工作流资料库",
+      "href": "/resources/workflows.html"
     },
     {
       "type": "sub_header",

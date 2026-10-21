@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import vm from 'node:vm'
+import { createHash } from 'node:crypto'
 
 const researchSummary = JSON.parse(
   fs.readFileSync('content/reviewed/research-summary.json', 'utf8')
@@ -61,10 +62,41 @@ for (const article of [researchSummary, knowledgeWorkflow]) {
   const post = { id: article.id, title: 'old', summary: 'old' }
   assert.equal(applyReviewedArticleMetadata(post).title, article.title)
   assert.equal(applyReviewedArticleMetadata(post).summary, article.summary)
+  assert.equal(post.lastEditedDay, article.reviewedAt.slice(0, 10))
+  assert.ok(article.blocks.some(b => b.href === '/resources/workflows.html'))
 }
 const untouched = { id: 'other', title: 'keep' }
 assert.equal(applyReviewedArticleMetadata(untouched), untouched)
 assert.equal(untouched.title, 'keep')
+const hub = fs.readFileSync('public/resources/workflows.html', 'utf8')
+assert.match(hub, /工作流资料库/)
+assert.match(hub, /24条/)
+assert.doesNotMatch(hub, /Wave 3|主题权重|搜索意图/)
+const knownArticles = new Set([researchSummary.slug, knowledgeWorkflow.slug])
+for (const match of hub.matchAll(
+  /(?:href|src)="(\/(?:resources|images|Tech)\/[^"#]+)"/g
+)) {
+  const target = match[1]
+  if (target.startsWith('/Tech/')) {
+    assert.ok(knownArticles.has(target.slice(1)), target)
+  } else {
+    assert.ok(fs.existsSync('public' + target), target)
+  }
+}
+const screenshots = [
+  ...hub.matchAll(/src="(\/images\/workflow-radar-20261021\/[^"#]+)"/g)
+].map(m => m[1])
+assert.equal(screenshots.length, 2)
+assert.equal(
+  new Set(
+    screenshots.map(path =>
+      createHash('sha256')
+        .update(fs.readFileSync('public' + path))
+        .digest('hex')
+    )
+  ).size,
+  2
+)
 console.log(
-  'Reviewed article scope, block graph, evidence images, resources and metadata passed'
+  'Reviewed article scope, block graph, evidence images, metadata, topic links and resource files passed'
 )
