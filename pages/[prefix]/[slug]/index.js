@@ -240,7 +240,7 @@ export async function getStaticProps({ params: { prefix, slug }, locale }) {
     Object.assign(props, globalProps)
   }
 
-  await processPostData(props, from)
+  await processPostData(props, from, locale)
   return buildStaticPropsResult(props, ISR_CONTENT_REVALIDATE)
 }
 
