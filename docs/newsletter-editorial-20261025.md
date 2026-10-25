@@ -34,3 +34,13 @@ The operations project stores machine-readable HTTP, browser, deployment, and co
 No full Next.js build is used for this release: the current source snapshot does not fully reconstruct the accepted production export. Local candidate tests, deployed preview tests, complete manifest/configuration comparisons, and ordinary production-domain checks gate activation. The source branch is retained for review; deployment is not a merge into the main branch.
 
 Targeted ESLint covers every modified JavaScript file and both new modules. A repository-wide lint attempt was stopped after roughly six minutes without completing; it is not reported as a pass.
+
+## Production acceptance
+
+Production deployment `5df64080-f557-4cc7-ad54-3e65f48dcc42` passed 18 HTTP checks and browser checks at 1440px and 390px on the ordinary `www.charliiai.com` domain. The preview passed the same checks before activation. The two viewport tests ran separately to stay within this Mac's GUI runner time limit. Within each browser run, remote first-party responses were cached by URL and relayed unchanged; an independent HTTP check fetched current deployment bytes and verified MIME types. No browser page errors or failed first-party resources were recorded in the final production cases.
+
+The first preview attempt hit a CDP response-body race, the second timed out waiting for the other article's client initialization, and a combined two-viewport run reached the GUI runner's 180-second limit. Hashing before response fulfillment, caching remote responses within a run, using client navigation for the related-article round trip, and splitting viewports produced complete passing evidence. Early failures remain in the operations artifacts.
+
+![Production desktop comparison table and diagram](screenshots/newsletter-20261025/desktop.png)
+
+![Production mobile comparison table and diagram](screenshots/newsletter-20261025/mobile.png)
