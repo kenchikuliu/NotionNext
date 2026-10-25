@@ -251,7 +251,7 @@ export async function getStaticProps({ params: { prefix }, locale }) {
     }
   }
 
-  await processPostData(props, from)
+  await processPostData(props, from, locale)
   return buildStaticPropsResult(props, ISR_CONTENT_REVALIDATE)
 }
 
